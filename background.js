@@ -84,9 +84,8 @@ function getContent() {
   var content = win.document.querySelector('#content');
   return content;
 }
-// NetworkList
 
-var networkList;
+// NetworkList
 
 function showNetworkList() {
   setContent('network_list.html');
@@ -95,8 +94,7 @@ function showNetworkList() {
 function networkListLoaded() {
   log('networkListLoaded');
   var content = getContent();
-  networkList = new NetworkList(this, content.contentWindow);
-  networkList.init(getText('Network List'));
+  networkList.init(this, content.contentWindow, getText('Network List'));
   chrome.networkingPrivate.getNetworks(
     {"networkType": "All", "visible": true, "limit": networkLimit},
     onNetworksLoaded);

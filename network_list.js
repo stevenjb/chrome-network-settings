@@ -1,48 +1,47 @@
-var NetworkList = function(parentWin, contentWin) {
-  this.parentWin = parentWin;  
-  this.contentWin = contentWin;
-  this.doc = contentWin.document;
-}
+var networkList = (function() {
 
-NetworkList.prototype = {
-  // Public methods
-
-  init: function(title) {
+  function initPublic(parentWin, contentWin, title) {
     log("NetworkList:init");
-    var titleNode = this.doc.querySelector('#title');
-    titleNode.innerText = title;
-  },
+    this.parentWin_ = parentWin;  
+    this.contentWin_ = contentWin;
+    this.doc_ = contentWin.document;
+    this.networks_ = [];
 
-  setNetworks: function(networks) {
+    var titleNode = this.doc_.querySelector('#title');
+    titleNode.innerText = title;
+  }
+
+  function setNetworksPublic(networks) {
     this.networks_ = networks;
-    var networksNode = this.doc.querySelector('#network-entries');
+    var networksNode = this.doc_.querySelector('#network-entries');
     while (networksNode.length > 0)
       networksNode.remove(0);
-    var first = this.doc.createElement('option');
+    var first = this.doc_.createElement('option');
     first.text = getText("Select a network");
     networksNode.add(first);
     for (var i = 0; i < networks.length; ++i) {
       var network = networks[i];
-      var n = this.doc.createElement('option');
+      var n = this.doc_.createElement('option');
       n.text = network['Name'];
       n.value = network['GUID'];
       networksNode.add(n);
     }
-    networksNode.addEventListener('change', this.networkChanged_.bind(this));
-  },
+    networksNode.addEventListener('change', this.networkChanged.bind(this));
+  }
 
-  // Private methods
-  networks_: [],
-
-  networkChanged_: function(event) {
+  function networkChanged(event) {
     var networksNode = event.target;
     var index = networksNode.selectedIndex;
     if (index <= 0)
       return;
-    var n = networksNode.item(index)
+    var n = networksNode.item(index);
     log("networkChanged: " + n.value);
     var network = this.networks_[index - 1];
-    this.parentWin.showNetwork(network  );
-  },
+    this.parentWin_.showNetwork(network  );
+  }
 
-}
+  return {
+    init: initPublic,
+    setNetworks: setNetworksPublic
+  };
+})();
