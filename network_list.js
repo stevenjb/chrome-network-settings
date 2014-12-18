@@ -1,17 +1,20 @@
 var networkList = (function() {
+  var parentWin_ = null;
+  var contentWin_ = null;
+  var doc_ = null;
+  var networks_ = [];
 
-  function initPublic(parentWin, contentWin, title) {
-    log("NetworkList:init");
+  function initImpl(parentWin, contentWin, title) {
+    log("networkList:init");
     this.parentWin_ = parentWin;  
     this.contentWin_ = contentWin;
     this.doc_ = contentWin.document;
-    this.networks_ = [];
 
     var titleNode = this.doc_.querySelector('#title');
     titleNode.innerText = title;
   }
 
-  function setNetworksPublic(networks) {
+  function setNetworksImpl(networks) {
     this.networks_ = networks;
     var networksNode = this.doc_.querySelector('#network-entries');
     while (networksNode.length > 0)
@@ -26,10 +29,10 @@ var networkList = (function() {
       n.value = network['GUID'];
       networksNode.add(n);
     }
-    networksNode.addEventListener('change', this.networkChanged.bind(this));
+    networksNode.addEventListener('change', networkChanged_.bind(this));
   }
 
-  function networkChanged(event) {
+  function networkChanged_(event) {
     var networksNode = event.target;
     var index = networksNode.selectedIndex;
     if (index <= 0)
@@ -41,7 +44,7 @@ var networkList = (function() {
   }
 
   return {
-    init: initPublic,
-    setNetworks: setNetworksPublic
+    init: initImpl,
+    setNetworks: setNetworksImpl
   };
 })();

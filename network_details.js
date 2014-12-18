@@ -1,25 +1,29 @@
-var NetworkDetails = function(parentWin, contentWin) {
-  this.parentWin = parentWin;  
-  this.contentWin = contentWin;
-  this.doc = contentWin.document;
-}
+var networkDetails = (function() {
+  var parentWin_ = null;
+  var contentWin_ = null;
+  var doc_ = null;
 
-NetworkDetails.prototype = {
-  // Public methods
+  function initImpl(parentWin, contentWin, network) {
+    log('networkDetails:init');
+    this.parentWin_ = parentWin;  
+    this.contentWin_ = contentWin;
+    this.doc_ = contentWin.document;
 
-  init: function(network) {
-    log('NetworkDetails:init');
-    var name = this.doc.querySelector('#network_name');
+    var name = this.doc_.querySelector('#network_name');
     name.innerText = getText('Network: ', [ network['Name'] ]);
-    var guid = this.doc.querySelector('#network_id');
-    guid.innerText = getText('ID: ', [ network['GUID'] ]);
-    var parentWin = this.parentWin;
-    var back = this.doc.querySelector('#back');
-    back.onclick = function(event) {
-      parentWin.showNetworkList();
-    }
-  },
 
-  // Private methods
-  
-}
+    var guid = this.doc_.querySelector('#network_id');
+    guid.innerText = getText('ID: ', [ network['GUID'] ]);
+
+    var back = this.doc_.querySelector('#back');
+    back.onclick = onBack_.bind(this);
+
+    function onBack_(event) {
+      this.parentWin_.showNetworkList();
+    }
+  }
+
+  return {
+    init: initImpl
+  };
+})();

@@ -106,7 +106,6 @@ function onNetworksLoaded(networks) {
 
 // NetworkDetails
 
-var networkDetails;
 var networkDetailsNetwork;
 
 function showNetwork(network) {
@@ -117,6 +116,5 @@ function showNetwork(network) {
 
 function networkLoaded() {
   var content = getContent();
-  networkDetails = new NetworkDetails(this, content.contentWindow);
-  networkDetails.init(networkDetailsNetwork);
+  networkDetails.init(this, content.contentWindow, networkDetailsNetwork);
 }
