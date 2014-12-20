@@ -11,8 +11,13 @@ var winBounds = { width: 600, height: 400 };
 var networkLimit = 10;
 
 chrome.app.runtime.onLaunched.addListener(function() {
-  createWindow();
+  initApp();
 });
+
+function initApp(func) {
+  createWindow();
+  initNetworkState();
+}
 
 // Returns translation for 'text'
 function getText(text, args) {
@@ -30,14 +35,14 @@ function log(msg) {
 
 // Window management
 
-function createWindow(func) {
+function createWindow() {
   var params = { id: winId, bounds: winBounds };
   var bgWindow = this;
   chrome.app.window.create(
     'frame.html',
     params,
     function(appWin) {
-      log('Created: ' + appWin.id)
+      log('Created: ' + appWin.id);
       appWin.contentWindow.bgWindow = bgWindow;
       appWin.contentWindow.addEventListener('load', frameLoaded);
     });
@@ -76,13 +81,24 @@ function contentLoaded() {
   if (content.srcName == 'network_list.html')
     networkListLoaded();
   else if (content.srcName == 'network_details.html')
-    networkLoaded();
+    networkDetailsLoaded();
 }
 
 function getContent() {
   var win = getWin();
   var content = win.document.querySelector('#content');
   return content;
+}
+
+// networkState
+
+function initNetworkState() {
+  networkState.init();
+  networkState.addObserver(this);
+}
+
+function networkStateChanged() {
+  log('networkStateChanged');
 }
 
 // NetworkList
@@ -95,26 +111,21 @@ function networkListLoaded() {
   log('networkListLoaded');
   var content = getContent();
   networkList.init(this, content.contentWindow, getText('Network List'));
-  chrome.networkingPrivate.getNetworks(
-    {"networkType": "All", "visible": true, "limit": networkLimit},
-    onNetworksLoaded);
-}
-
-function onNetworksLoaded(networks) {
-  networkList.setNetworks(networks);
+  networkDetails.init(this);
 }
 
 // NetworkDetails
 
-var networkDetailsNetwork;
+var networkDetailsNetworkId;
 
-function showNetwork(network) {
-  log('showNetwork: ' + network['Name']);
-  networkDetailsNetwork = network;
+function showNetwork(networkId) {
+  log('showNetwork: ' + networkId);
+  networkDetailsNetworkId = networkId;
   setContent('network_details.html');
 }
 
-function networkLoaded() {
+function networkDetailsLoaded() {
   var content = getContent();
-  networkDetails.init(this, content.contentWindow, networkDetailsNetwork);
+  networkDetails.setContentWindow(content.contentWindow);
+  networkDetails.setNetworkId(networkDetailsNetworkId);
 }

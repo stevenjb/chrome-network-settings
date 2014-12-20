@@ -14,7 +14,11 @@
   ],
   "app": {
     "background": {
-      "scripts": ["network_list.js", "network_details.js", "background.js"]
+      "scripts": [
+	"network_state.js",
+	"network_list.js",
+	"network_details.js",
+	"background.js"]
     }
   }
 }

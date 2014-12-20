@@ -1,20 +1,28 @@
-var networkList = (function() {
-  var parentWin_ = null;
-  var contentWin_ = null;
-  var doc_ = null;
-  var networks_ = [];
+var networkList = networkList || {
+   parentWin_: null,
+   contentWin_: null,
+   doc_: null,
+   networks_: []
+};
 
-  function initImpl(parentWin, contentWin, title) {
-    log("networkList:init");
-    this.parentWin_ = parentWin;  
-    this.contentWin_ = contentWin;
-    this.doc_ = contentWin.document;
+(function() {
 
-    var titleNode = this.doc_.querySelector('#title');
-    titleNode.innerText = title;
+  function onSelectedNetworkChanged_(event) {
+    var networksNode = event.target;
+    var index = networksNode.selectedIndex;
+    if (index <= 0)
+      return;
+    var n = networksNode.item(index);
+    log("networkChanged: " + n.value);
+    var network = this.networks_[index - 1];
+    this.parentWin_.showNetwork(network['GUID']);
   }
 
-  function setNetworksImpl(networks) {
+  // networkList functions
+
+  // networkState Observer
+  networkList.networkListChanged = function(networks) {
+    log('networkList.networkListChanged');
     this.networks_ = networks;
     var networksNode = this.doc_.querySelector('#network-entries');
     while (networksNode.length > 0)
@@ -29,22 +37,22 @@ var networkList = (function() {
       n.value = network['GUID'];
       networksNode.add(n);
     }
-    networksNode.addEventListener('change', networkChanged_.bind(this));
-  }
-
-  function networkChanged_(event) {
-    var networksNode = event.target;
-    var index = networksNode.selectedIndex;
-    if (index <= 0)
-      return;
-    var n = networksNode.item(index);
-    log("networkChanged: " + n.value);
-    var network = this.networks_[index - 1];
-    this.parentWin_.showNetwork(network  );
-  }
-
-  return {
-    init: initImpl,
-    setNetworks: setNetworksImpl
+    networksNode.addEventListener('change',
+                                  onSelectedNetworkChanged_.bind(this));
   };
+
+  networkList.init = function(parentWin, contentWin, title) {
+    log("networkList:init");
+    networkList.parentWin_ = parentWin;  
+    networkList.contentWin_ = contentWin;
+    var doc = contentWin.document;
+    networkList.doc_ = doc;
+
+    var titleNode = doc.querySelector('#title');
+    titleNode.innerText = title;
+
+    networkList.networkListChanged(networkState.networks);
+    networkState.addObserver(this);
+  };
+
 })();

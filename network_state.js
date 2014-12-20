@@ -1,64 +1,159 @@
-var networkState = (function () {
+var networkState = networkState || {
+  networks: [],
+  ethernet: null,
+  wifi: null,
+  mobile: null,
+  vpn: null,
+  observers_: [],
+  networkObservers_: {}
+};
 
-  /**
-   * Public init method.
-   * @param {Object} handler |handler|.networksChanged will be called when the
-   *     available networks or their state has changed.
-   **/
-  function initPublic(handler) {
-    this.handler_ = handler;
+(function () {
 
-    this.ethernet_ = null;
-    this.wifi_ = null;
-    this.mobile_ = null;
-    this.vpn_ = null;
-
-    var filter = { visible: true, configured: false, limit: 0 };
-    chrome.networkingPrivate.getNetworks(filter, function(networks) {
-      this.onNetworksReceived(networks);
-    });
-    chrome.networkingPrivate.onNetworkListChanged.addListener(
-      this.onNetworksReceived);
+  function sameNetworkState(a, b) {
+    if (a == null && b == null)
+      return true;
+    if (a == null || b == null)
+      return false;
+    return (
+        (a['Type'] == b['Type']) &&
+        (a['GUID'] == b['GUID']) &&
+        (a['ConnectionState'] == b['ConnectionState']));
   }
 
   function onNetworksReceived(networks) {
+    // log('onNetworksReceived: ' + JSON.stringify(networks, null, '\t'));
+    log('onNetworksReceived');
+
     var ethernet = null;
     var wifi = null;
     var mobile = null;
     var vpn = null;
-    for (var n in networks) {
-      var state = n['ConnectionState'];
+    for (var network of networks) {
+      var state = network['ConnectionState'];
       if (state == 'NotConnected')
         break;  // Connected and Connecting networks are listed first
-      var type = n['Type'];
-      if (type == 'Ethernet' && !this.ethernet_)
-        ethernet = n;
-      if (type == 'WiFI' && !this.wifi_)
-        wifi = n;
-      if ((type == 'Cellular' || type == 'WiMAX') && !this.mobile_)
-        mobile = n;
-      if (type == 'VPN' && !this.vpn_)
-        vpn = n;
+      var type = network['Type'];
+      if (type == 'Ethernet' && !ethernet)
+        ethernet = network;
+      if (type == 'WiFi' && !wifi)
+        wifi = network;
+      if ((type == 'Cellular' || type == 'WiMAX') && !mobile)
+        mobile = network;
+      if (type == 'VPN' && !vpn)
+        vpn = network;
     }
-    var changed = false;
-    if (ethernet == this.ethernet_ &&
-        wifi == this.wifi_ &&
-        mobile == this.mobile_ &&
-        vpn == this.vpn_) {
+
+    networkState.networks = networks;
+    notifyObservers('networkListChanged', networks);
+
+    if (sameNetworkState(ethernet, networkState.ethernet) &&
+        sameNetworkState(wifi, networkState.wifi) &&
+        sameNetworkState(mobile, networkState.mobile) &&
+        sameNetworkState(vpn, networkState.vpn)) {
       return;
     }
-    this.ethernet_ = ethernet;
-    this.wifi_ = wifi;
-    this.mobile_ = mobile;
-    this.vpn_ = vpn;
-    this.handler_.networksChanged();
+
+    networkState.ethernet = ethernet;
+    networkState.wifi = wifi;
+    networkState.mobile = mobile;
+    networkState.vpn = vpn;
+
+    notifyObservers('networkStateChanged', undefined);
   }
 
-  return {
-    init: initPublic,
-    ethernet: function() { return this.ethernet_; },
-    wifi: function() { return this.wifi_; },
-    mobile: function() { return this.mobile_; },
-    vpn: function() { return this.vpn_; }
+  function getNetworks() {
+    var filter = {
+      networkType: 'All',
+      visible: true,
+      configured: false,
+      limit: 0  // No limit
+    };
+    chrome.networkingPrivate.getNetworks(filter, onNetworksReceived);
+  }
+
+  function onNetworkListChanged(networkIds) {
+    // log('onNetworkListChanged: ' + JSON.stringify(networkList, null, ' '));
+    log('onNetworkListChanged');
+    getNetworks();
+  }
+
+  function onNetworksChanged(networkIds) {
+    // log('onNetworkListChanged: ' + JSON.stringify(networkList, null, ' '));
+    log('onNetworksChanged');
+    for (var id of networkIds) {
+      if (!(id in networkState.networkObservers_))
+        continue;
+      networkState.requestStateForNetworkId(id);
+    }
+  }
+
+  function onGetNetworkState(properties) {
+    var networkId = properties['GUID'];
+    log('onGetNetworkState: ' + networkId);
+    for (var id in networkState.networkObservers_) {
+      if (id != networkId)
+        continue;
+      for (var observer of networkState.networkObservers_[id]) {
+        if ('onNetworkStateChanged' in observer)
+          observer['onNetworkStateChanged'](properties);
+      }
+    }
+  }
+
+  function notifyObservers(func, arg) {
+    log('notifyObservers: ' + func);
+    for (var observer of networkState.observers_) {
+      if (func in observer)
+        observer[func](arg);
+    }
+  }
+
+  // Public methods
+
+  networkState.init = function() {
+    log('networkState:init');
+
+    getNetworks();
+    chrome.networkingPrivate.onNetworkListChanged.addListener(
+        onNetworkListChanged);
+    chrome.networkingPrivate.onNetworksChanged.addListener(
+        onNetworksChanged);
   };
+
+  networkState.addObserver = function(observer) {
+    log('networkState:addObserver');
+    networkState.observers_.push(observer);
+  };
+
+  networkState.addNetworkObserver = function(networkId, observer) {
+    log('networkState:addNetworkObserver: ' + networkId);
+    if (!(networkId in networkState.networkObservers_))
+      networkState.networkObservers_[networkId] = [];
+    networkState.networkObservers_[networkId].push(observer);
+  };
+
+  networkState.removeNetworkObserver = function(networkId, observer) {
+    log('networkState:removeNetworkObserver: ' + networkId);
+    if (!(networkId in networkState.networkObservers_))
+      return;
+    for (var id in networkState.networkObservers_) {
+      if (id != networkId)
+        continue;
+      var observers = networkState.networkObservers_[id];
+      var len = observers.length;
+      for (var i = 0; i < len; ++i) {
+        if (observers[i] == observer) {
+          networkState.networkObservers_[id] = observers.splice(i, 1);
+          return;
+        }
+      }
+    }
+    log('!!! Observer not found !!!');
+  };
+
+  networkState.requestStateForNetworkId = function(networkId) {
+    chrome.networkingPrivate.getState(networkId, onGetNetworkState);
+  };
+
 })();
