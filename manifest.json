@@ -15,6 +15,7 @@
   "app": {
     "background": {
       "scripts": [
+	"elements/network-list-select.js",
 	"network_state.js",
 	"network_list.js",
 	"network_details.js",

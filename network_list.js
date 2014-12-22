@@ -6,39 +6,20 @@ var networkList = networkList || {
 };
 
 (function() {
-
-  function onSelectedNetworkChanged_(event) {
-    var networksNode = event.target;
-    var index = networksNode.selectedIndex;
-    if (index <= 0)
-      return;
-    var n = networksNode.item(index);
-    log("networkChanged: " + n.value);
-    var network = this.networks_[index - 1];
-    this.parentWin_.showNetwork(network['GUID']);
-  }
-
-  // networkList functions
+  networkList.onNetworkClicked_ = function(guid) {
+    log('networkList.onNetworkClicked: ' + guid);
+    this.parentWin_.showNetwork(guid);
+  };
 
   // networkState Observer
   networkList.networkListChanged = function(networks) {
     log('networkList.networkListChanged');
     this.networks_ = networks;
     var networksNode = this.doc_.querySelector('#network-entries');
-    while (networksNode.length > 0)
-      networksNode.remove(0);
-    var first = this.doc_.createElement('option');
-    first.text = getText("Select a network");
-    networksNode.add(first);
+    networksNode.clearNetworks();
     for (var i = 0; i < networks.length; ++i) {
-      var network = networks[i];
-      var n = this.doc_.createElement('option');
-      n.text = network['Name'];
-      n.value = network['GUID'];
-      networksNode.add(n);
+      networksNode.addNetwork(networks[i]);
     }
-    networksNode.addEventListener('change',
-                                  onSelectedNetworkChanged_.bind(this));
   };
 
   networkList.init = function(parentWin, contentWin, title) {
@@ -47,9 +28,15 @@ var networkList = networkList || {
     networkList.contentWin_ = contentWin;
     var doc = contentWin.document;
     networkList.doc_ = doc;
+    registerNetworkListSelect(doc);
 
     var titleNode = doc.querySelector('#title');
     titleNode.innerText = title;
+
+    doc.querySelector('#select-text').innerText = getText('Select a network:');
+
+    this.doc_.querySelector('#network-entries').onClickFunc =
+        networkList.onNetworkClicked_.bind(this);
 
     networkList.networkListChanged(networkState.networks);
     networkState.addObserver(this);
