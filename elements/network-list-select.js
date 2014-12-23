@@ -8,13 +8,11 @@ function registerNetworkListSelect(doc) {
   };
 
   networkListSelectPrototype.addNetwork = function(network) {
-    var p = this.ownerDocument.createElement('p');
-    var span = this.ownerDocument.createElement('span');
-    span.textContent = network['Name'];
-    p.appendChild(span);
+    var n = this.ownerDocument.createElement('network-list-item');
+    n.setNetwork(network);
     var selector = this;
-    p.onclick = function(event) { selector.clickNetwork(network['GUID']); };
-    this.listNode_.appendChild(p);
+    n.onclick = function(event) { selector.clickNetwork(network['GUID']); };
+    this.listNode_.appendChild(n);
   };
 
   networkListSelectPrototype.clearNetworks = function(node) {
@@ -26,6 +24,7 @@ function registerNetworkListSelect(doc) {
   networkListSelectPrototype.createdCallback = function() {
     console.log('networkListSelect created');
     this.listNode_ = this.ownerDocument.createElement('div');
+    this.listNode_.id = 'container-div';
     this.appendChild(this.listNode_);
   };
 

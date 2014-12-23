@@ -1,0 +1,16 @@
+network-list-item img {
+    height: 20px;
+    padding-right: 8px;
+    vertical-align: middle;
+    width: 20px;
+}
+
+network-list-item div {
+    border-style: none;
+    margin: 0px;
+    padding: 4px;
+}
+
+network-list-item div:hover {
+    background-color: lightgrey;
+}

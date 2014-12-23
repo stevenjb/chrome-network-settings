@@ -28,6 +28,7 @@ var networkList = networkList || {
     networkList.contentWin_ = contentWin;
     var doc = contentWin.document;
     networkList.doc_ = doc;
+    registerNetworkListItem(doc);
     registerNetworkListSelect(doc);
 
     var titleNode = doc.querySelector('#title');

@@ -1,14 +1,5 @@
-network-list-select div {
+network-list-select #container-div {
     border-style: solid;
     border-width: 1px;
     padding: 4px;
-}
-
-network-list-select p {
-    margin: 0px;
-    padding: 4px;
-}
-
-network-list-select p:hover {
-    background-color: lightgrey;
 }
