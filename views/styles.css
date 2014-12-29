@@ -1,0 +1,15 @@
+html {
+  height: 100%;
+}
+
+body {
+  background-color: #F8F8F8;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  height: 100%;
+  margin: 15px;
+}
+
+.drag {
+  -webkit-app-region: drag;
+}

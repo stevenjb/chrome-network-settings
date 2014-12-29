@@ -72,7 +72,7 @@ function setContent(html) {
   //content.contentWindow.addEventListener('load', contentLoaded);
   content.onload = contentLoaded;
   content.srcName = html;  // For readability
-  content.src = html;
+  content.src = 'views/' + html;
 }
 
 function contentLoaded() {

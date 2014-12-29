@@ -49,7 +49,7 @@ function registerNetworkListItem(doc) {
   var css =  doc.createElement('link');
   css.setAttribute('rel', 'stylesheet');
   css.setAttribute('type', 'text/css');
-  css.setAttribute('href', 'elements/network-list-item.css');
+  css.setAttribute('href', '/elements/network-list-item.css');
   doc.getElementsByTagName('head')[0].appendChild(css);
 
   console.log('networkListItem registered');

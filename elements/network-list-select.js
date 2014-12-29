@@ -33,7 +33,7 @@ function registerNetworkListSelect(doc) {
   var css =  doc.createElement('link');
   css.setAttribute('rel', 'stylesheet');
   css.setAttribute('type', 'text/css');
-  css.setAttribute('href', 'elements/network-list-select.css');
+  css.setAttribute('href', '/elements/network-list-select.css');
   doc.getElementsByTagName('head')[0].appendChild(css);
 
   console.log('networkListSelect registered');
