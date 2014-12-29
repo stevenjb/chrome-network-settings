@@ -5,6 +5,11 @@ var networkSummary = networkSummary || {
 };
 
 (function() {
+
+  function onMore(event) {
+    networkSummary.parentWin_.showNetworkList();
+  }
+
   networkSummary.onNetworkClicked_ = function(guid) {
     log('networkSummary.onNetworkClicked: ' + guid);
     this.parentWin_.showNetwork(guid);
@@ -38,7 +43,7 @@ var networkSummary = networkSummary || {
     var doc = networkSummary.doc_;
     registerNetworkListItem(doc);
 
-    doc.querySelector('#title').innerText = getText('Networks');
+    doc.querySelector('#more').onclick = onMore;
 
     var items = this.doc_.querySelectorAll('network-list-item');
     for (var i = 0; i < items.length; ++i)

@@ -46,8 +46,7 @@ var networkDetails = networkDetails || {
     networkDetails.doc_ = contentWin.document;
 
     var doc = networkDetails.doc_;
-    var back = doc.querySelector('#back');
-    back.onclick = onBack;
+    doc.querySelector('#back').onclick = onBack;
   };
 
   networkDetails.setNetworkId = function(networkId) {

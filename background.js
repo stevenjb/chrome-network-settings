@@ -118,6 +118,10 @@ function networkSummaryLoaded() {
 
 // NetworkList
 
+function showNetworkList() {
+  setContent('network_list.html');
+}
+
 function closeDetails() {
   setContent(initialContent);
 }

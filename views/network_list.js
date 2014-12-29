@@ -31,9 +31,6 @@ var networkList = networkList || {
     registerNetworkListItem(doc);
     registerNetworkListSelect(doc);
 
-    doc.querySelector('#title').innerText = getText('Network List');
-    doc.querySelector('#select-text').innerText = getText('Select a network:');
-
     this.doc_.querySelector('#network-entries').onClickFunc =
         networkList.onNetworkClicked_.bind(this);
 
