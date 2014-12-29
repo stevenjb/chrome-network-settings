@@ -5,7 +5,8 @@
  * @see http://developer.chrome.com/apps/app.window.html
  */
 
-var initialContent = 'network_list.html';
+// var initialContent = 'network_list.html';
+var initialContent = 'network_summary.html';
 var winId = 'main';
 var winBounds = { width: 600, height: 400 };
 var networkLimit = 10;
@@ -82,6 +83,8 @@ function contentLoaded() {
     networkListLoaded();
   else if (content.srcName == 'network_details.html')
     networkDetailsLoaded();
+  else if (content.srcName == 'network_summary.html')
+    networkSummaryLoaded();
 }
 
 function getContent() {
@@ -97,29 +100,44 @@ function initNetworkState() {
   networkState.addObserver(this);
 }
 
-function networkStateChanged() {
-  log('networkStateChanged');
+function onNetworkStateChanged() {
+  log('onNetworkStateChanged');
+}
+
+// NetworkSummary
+
+function showNetworkSummary() {
+  setContent('network_summary.html');
+}
+
+function networkSummaryLoaded() {
+  log('networkSummaryLoaded');
+  var content = getContent();
+  networkSummary.init(this, content.contentWindow);
 }
 
 // NetworkList
 
-function showNetworkList() {
-  setContent('network_list.html');
+function closeDetails() {
+  setContent(initialContent);
 }
 
 function networkListLoaded() {
   log('networkListLoaded');
   var content = getContent();
-  networkList.init(this, content.contentWindow, getText('Network List'));
-  networkDetails.init(this);
+  networkList.init(this, content.contentWindow);
 }
 
 // NetworkDetails
 
 var networkDetailsNetworkId;
+var networkDetailsOpendFrom = '';
 
-function showNetwork(networkId) {
+function showNetwork(networkId, from) {
   log('showNetwork: ' + networkId);
+  if (networkDetailsNetworkId == undefined)
+    networkDetails.init(this);
+
   networkDetailsNetworkId = networkId;
   setContent('network_details.html');
 }

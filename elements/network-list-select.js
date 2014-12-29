@@ -10,8 +10,7 @@ function registerNetworkListSelect(doc) {
   networkListSelectPrototype.addNetwork = function(network) {
     var n = this.ownerDocument.createElement('network-list-item');
     n.setNetwork(network);
-    var selector = this;
-    n.onclick = function(event) { selector.clickNetwork(network['GUID']); };
+    n.onClickFunc = networkListSelectPrototype.clickNetwork.bind(this);
     this.listNode_.appendChild(n);
   };
 

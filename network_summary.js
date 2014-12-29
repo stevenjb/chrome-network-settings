@@ -1,48 +1,51 @@
-var NetworkList = function(parentWin, contentWin) {
-  this.parentWin = parentWin;
-  this.contentWin = contentWin;
-  this.doc = contentWin.document;
-}
+var networkSummary = networkSummary || {
+  parentWin_: null,
+  contentWin_: null,
+  doc_: null
+};
 
-NetworkList.prototype = {
-  // Public methods
+(function() {
+  networkSummary.onNetworkClicked_ = function(guid) {
+    log('networkSummary.onNetworkClicked: ' + guid);
+    this.parentWin_.showNetwork(guid);
+  };
 
-  init: function(title) {
-    log("NetworkList:init");
-    var titleNode = this.doc.querySelector('#title');
-    titleNode.innerText = title;
-  },
+  // networkState Observer
+  networkSummary.onNetworkStateChanged = function() {
+    log('networkSummary:onNetworkStateChanged');
 
-  setNetworks: function(networks) {
-    this.networks_ = networks;
-    var networksNode = this.doc.querySelector('#network-entries');
-    while (networksNode.length > 0)
-      networksNode.remove(0);
-    var first = this.doc.createElement('option');
-    first.text = getText("Select a network");
-    networksNode.add(first);
-    for (var i = 0; i < networks.length; ++i) {
-      var network = networks[i];
-      var n = this.doc.createElement('option');
-      n.text = network['Name'];
-      n.value = network['GUID'];
-      networksNode.add(n);
+    var doc = networkSummary.doc_;
+
+    function updateItem(id, network) {
+      var item = doc.querySelector('#' + id);
+      item.setNetwork(network);
     }
-    networksNode.addEventListener('change', this.networkChanged_.bind(this));
-  },
 
-  // Private methods
-  networks_: [],
+    updateItem('ethernet', networkState.ethernet);
+    updateItem('wifi', networkState.wifi);
+    updateItem('mobile', networkState.mobile);
+    updateItem('vpn', networkState.vpn);
+  };
 
-  networkChanged_: function(event) {
-    var networksNode = event.target;
-    var index = networksNode.selectedIndex;
-    if (index <= 0)
-      return;
-    var n = networksNode.item(index)
-    log("networkChanged: " + n.value);
-    var network = this.networks_[index - 1];
-    this.parentWin.showNetwork(network  );
-  },
+  // networkSummary functions
 
-}
+  networkSummary.init = function(parentWin, contentWin) {
+    log('networkSummary:init');
+    networkSummary.parentWin_ = parentWin;
+    networkSummary.contentWin_ = contentWin;
+    networkSummary.doc_ = contentWin.document;
+
+    var doc = networkSummary.doc_;
+    registerNetworkListItem(doc);
+
+    doc.querySelector('#title').innerText = getText('Networks');
+
+    var items = this.doc_.querySelectorAll('network-list-item');
+    for (var i = 0; i < items.length; ++i)
+      items[i].onClickFunc = networkSummary.onNetworkClicked_.bind(this);
+
+    networkSummary.onNetworkStateChanged();
+    networkState.addObserver(this);
+  };
+
+})();

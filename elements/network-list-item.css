@@ -14,3 +14,11 @@ network-list-item div {
 network-list-item div:hover {
     background-color: lightgrey;
 }
+
+network-list-item #state {
+    margin-left: 8px;
+}
+
+network-list-item span.Connected,span.Connecting {
+    font-weight: bold;
+}

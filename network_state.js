@@ -31,21 +31,19 @@ var networkState = networkState || {
     var vpn = null;
     for (var network of networks) {
       var state = network['ConnectionState'];
-      if (state == 'NotConnected')
-        break;  // Connected and Connecting networks are listed first
       var type = network['Type'];
-      if (type == 'Ethernet' && !ethernet)
+      if (!ethernet && type == 'Ethernet')
         ethernet = network;
-      if (type == 'WiFi' && !wifi)
+      if (!wifi && type == 'WiFi')
         wifi = network;
-      if ((type == 'Cellular' || type == 'WiMAX') && !mobile)
+      if (!mobile && (type == 'Cellular' || type == 'WiMAX'))
         mobile = network;
-      if (type == 'VPN' && !vpn)
+      if (!vpn && type == 'VPN')
         vpn = network;
     }
 
     networkState.networks = networks;
-    notifyObservers('networkListChanged', networks);
+    notifyObservers('onNetworkListChanged', networks);
 
     if (sameNetworkState(ethernet, networkState.ethernet) &&
         sameNetworkState(wifi, networkState.wifi) &&
@@ -59,7 +57,7 @@ var networkState = networkState || {
     networkState.mobile = mobile;
     networkState.vpn = vpn;
 
-    notifyObservers('networkStateChanged', undefined);
+    notifyObservers('onNetworkStateChanged', undefined);
   }
 
   function getNetworks() {
@@ -95,8 +93,8 @@ var networkState = networkState || {
       if (id != networkId)
         continue;
       for (var observer of networkState.networkObservers_[id]) {
-        if ('onNetworkStateChanged' in observer)
-          observer['onNetworkStateChanged'](properties);
+        if ('onNetworkChanged' in observer)
+          observer['onNetworkChanged'](properties);
       }
     }
   }

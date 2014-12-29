@@ -12,8 +12,8 @@ var networkList = networkList || {
   };
 
   // networkState Observer
-  networkList.networkListChanged = function(networks) {
-    log('networkList.networkListChanged');
+  networkList.onNetworkListChanged = function(networks) {
+    log('networkList.onNetworkListChanged');
     this.networks_ = networks;
     var networksNode = this.doc_.querySelector('#network-entries');
     networksNode.clearNetworks();
@@ -22,7 +22,7 @@ var networkList = networkList || {
     }
   };
 
-  networkList.init = function(parentWin, contentWin, title) {
+  networkList.init = function(parentWin, contentWin) {
     log("networkList:init");
     networkList.parentWin_ = parentWin;  
     networkList.contentWin_ = contentWin;
@@ -31,15 +31,13 @@ var networkList = networkList || {
     registerNetworkListItem(doc);
     registerNetworkListSelect(doc);
 
-    var titleNode = doc.querySelector('#title');
-    titleNode.innerText = title;
-
+    doc.querySelector('#title').innerText = getText('Network List');
     doc.querySelector('#select-text').innerText = getText('Select a network:');
 
     this.doc_.querySelector('#network-entries').onClickFunc =
         networkList.onNetworkClicked_.bind(this);
 
-    networkList.networkListChanged(networkState.networks);
+    networkList.onNetworkListChanged(networkState.networks);
     networkState.addObserver(this);
   };
 

@@ -9,17 +9,17 @@ var networkDetails = networkDetails || {
 (function() {
 
   function onBack(event) { 
-    networkDetails.parentWin_.showNetworkList(); 
+    networkDetails.parentWin_.closeDetails(); 
   }
 
   // networkState Observer
-  networkDetails.onNetworkStateChanged = function(network) {
-    log('networkDetails:onNetworkStateChanged: ' +
+  networkDetails.onNetworkChanged = function(network) {
+    log('networkDetails:onNetworkChanged: ' +
         JSON.stringify(network, null, ' '));
     if (network['GUID'] != networkDetails.networkId_)
       return;
 
-    log('networkDetails:onNetworkStateChanged: ' + network['GUID']);
+    log('networkDetails:onNetworkChanged: ' + network['GUID']);
     networkDetails.network_ = network;
 
     var doc = networkDetails.doc_;

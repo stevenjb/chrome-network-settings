@@ -18,8 +18,9 @@
 	"elements/network-list-item.js",
 	"elements/network-list-select.js",
 	"network_state.js",
-	"network_list.js",
 	"network_details.js",
+	"network_list.js",
+	"network_summary.js",
 	"background.js"]
     }
   }

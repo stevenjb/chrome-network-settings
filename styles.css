@@ -14,3 +14,7 @@ iframe {
   border: 0px;
   height: 100%;
 }
+
+.drag {
+  -webkit-app-region: drag;
+}
