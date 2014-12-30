@@ -11,7 +11,11 @@ function registerNetworkListItem(doc, listType) {
     console.log('networkListItem created');
     var div = this.ownerDocument.createElement('div');
     this.icon_ = this.ownerDocument.createElement('img');
+    this.icon_.id = 'icon';
     div.appendChild(this.icon_);
+    this.badge_ = this.ownerDocument.createElement('img');
+    this.badge_.id = 'badge';
+    div.appendChild(this.badge_);
     this.name_ = this.ownerDocument.createElement('span');
     this.name_.id = 'name';
     div.appendChild(this.name_);
@@ -35,11 +39,39 @@ function registerNetworkListItem(doc, listType) {
 
     var state = network['ConnectionState'];
     var type = network['Type'];
-    var strength = network['Strength'];
+    var strength;
+    var security;
+
     var iconType;
     var iconAmt;
-    if (type == 'WiFi') {
+    if (type == 'Ethernet') {
+      iconType = 'ethernet';
+    } else if (type == 'WiFi') {
       iconType = 'wifi';
+      var wifi = network['WiFi'];
+      if (wifi) {
+        strength = wifi['SignalStrength'];
+        security = wifi['Security'];
+      }
+    } else if (type == 'Cellular') {
+      iconType = 'mobile';
+      var wifi = network['WiFi'];
+      if (wifi)
+        strength = wifi['SignalStrength'];
+    } else if (type == 'Cellular') {
+      iconType = 'mobile';
+      var cellular = network['Cellular'];
+      if (cellular)
+        strength = cellular['SignalStrength'];
+    } else if (type == 'WiMAX') {
+      iconType = 'mobile';
+      var wimax = network['WiMAX'];
+      if (wimax)
+        strength = wimax['SignalStrength'];
+    } else if (type == 'VPN') {
+      iconType = 'vpn';
+    }
+    if (iconType == 'wifi' || iconType == 'mobile') {
       if (listType == 'summary' && state != 'Connected')
         iconAmt = '00';
       else if (strength <= 25)
@@ -51,9 +83,18 @@ function registerNetworkListItem(doc, listType) {
       else
         iconAmt = '100';
     }
-    if (iconType)
-      this.icon_.src = '../assets/' + iconType + '_' + iconAmt + '.png';
-
+    if (iconType) {
+      var src = '../assets/' + iconType;
+      if (iconAmt)
+          src += '_' + iconAmt;
+      this.icon_.src = src + '.png';
+    }
+    if (security) {
+      this.badge_.style.display = undefined;
+      this.badge_.src = '../assets/secure.png';
+    } else {
+      this.badge_.style.display = 'none';
+    }
     this.name_.textContent = network['Name'];
 
     this.state_.className = state;

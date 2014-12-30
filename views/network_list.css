@@ -1,0 +1,4 @@
+network-list-select #container-div {
+    height: 128px;
+    overflow: auto;
+}
