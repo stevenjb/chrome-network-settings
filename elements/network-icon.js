@@ -13,6 +13,7 @@ function registerNetworkIcon(doc, listType) {
     var badge = doc.createElement('img');
     badge.id = 'badge';
     div.appendChild(badge);
+
     template.content.appendChild(div);
 
     doc.head.appendChild(template);

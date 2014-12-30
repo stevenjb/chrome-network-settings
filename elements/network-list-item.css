@@ -1,27 +1,51 @@
-network-list-item div {
+network-list-item::shadow div {
     border-style: none;
     margin: 0px;
     padding: 4px;
 }
 
-network-list-item div:hover {
+network-list-item::shadow div:hover {
     background-color: lightgrey;
 }
 
-network-list-item #icon {
+network-list-item::shadow #icon {
     height: 32px;
     width: 32px;
     vertical-align: middle;
 }
 
-network-list-item #name {
+network-list-item::shadow #name {
     margin-left: 8px;
 }
 
-network-list-item #state {
+network-list-item::shadow #state {
     margin-left: 8px;
 }
 
-network-list-item span.Connected,span.Connecting {
+network-list-item::shadow span.Connected,span.Connecting {
     font-weight: bold;
+}
+
+/* TODO(stevenjb): Figure out how to apply network-icon.css within the
+   network-list-item shadow dom */
+
+network-list-item::shadow network-icon::shadow div {
+    border-style: none;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+network-list-item::shadow network-icon::shadow #icon {
+    height: 100%;
+    width: 100%;
+}
+
+network-list-item::shadow network-icon::shadow #badge {
+    display: inline;
+    height: 50%;
+    margin-left: -50%;
+    margin-top: 50%;
+    width: 50%;
 }

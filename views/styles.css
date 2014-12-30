@@ -1,5 +1,6 @@
 html {
   height: 100%;
+  width: 100%;
 }
 
 body {
@@ -7,7 +8,12 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   height: 100%;
+  width: 100%;
   margin: 15px;
+}
+
+iframe {
+  width: 100%;
 }
 
 .drag {

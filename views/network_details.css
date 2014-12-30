@@ -1,0 +1,15 @@
+div#title {
+    display: block;
+}
+
+div#title network-icon {
+    height: 48px;
+    width: 48px;
+    vertical-align: middle;
+}
+
+div#title span {
+    font-size: 30px;
+    font-weight: bold;
+    vertical-align: middle;
+}

@@ -9,21 +9,39 @@ function registerNetworkListItem(doc, listType) {
       this.onClickFunc(this.guid_);
   };
 
-  networkListItemPrototype.createdCallback = function() {
-    console.log('networkListItem created');
-    var div = this.ownerDocument.createElement('div');
-    this.icon_ = this.ownerDocument.createElement('network-icon');
-    this.icon_.id = 'icon';
-    div.appendChild(this.icon_);
-    this.name_ = this.ownerDocument.createElement('span');
-    this.name_.id = 'name';
-    div.appendChild(this.name_);
-    this.state_ = this.ownerDocument.createElement('span');
-    this.state_.id = 'state';
-    div.appendChild(this.state_);
-    this.div_ = div;
+  function createTemplate(doc) {
+    var template = doc.createElement('template');
+    template.id = 'networkListItemTemplate';
 
-    this.appendChild(div);
+    var div = doc.createElement('div');
+    var icon = doc.createElement('network-icon');
+    icon.id = 'icon';
+    div.appendChild(icon);
+    var name = doc.createElement('span');
+    name.id = 'name';
+    div.appendChild(name);
+    var state = doc.createElement('span');
+    state.id = 'state';
+    div.appendChild(state);
+
+    template.content.appendChild(div);
+
+    doc.head.appendChild(template);
+  };
+
+  networkListItemPrototype.createdCallback = function() {
+    this.root_ = this.createShadowRoot();
+
+    var doc = this.ownerDocument;
+    var template = doc.querySelector('#networkListItemTemplate');
+    var clone = doc.importNode(template.content, true);
+    this.root_.appendChild(clone);
+
+    var css = ':host { display: inline-block; }';
+    var style = doc.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(css));
+    this.root_.appendChild(style);
 
     this.onclick = networkListItemPrototype.clickNetwork.bind(this);
   };
@@ -37,14 +55,16 @@ function registerNetworkListItem(doc, listType) {
     }
     this.style.display = undefined;  // inherit
 
-    this.icon_.setNetwork(network);
+    this.root_.querySelector('#icon').setNetwork(network);
+    this.root_.querySelector('#name').textContent = network['Name'];
 
-    this.name_.textContent = network['Name'];
-
-    var state = network['ConnectionState'];
-    this.state_.className = state;
-    this.state_.textContent = getText(state);
+    var stateName = network['ConnectionState'];
+    var stateNode = this.root_.querySelector('#state');
+    stateNode.className = stateName;
+    stateNode.textContent = getText(stateName);
   };
+
+  createTemplate(doc);
 
   var networkListItemElement = doc.registerElement(
       'network-list-item', { prototype : networkListItemPrototype });

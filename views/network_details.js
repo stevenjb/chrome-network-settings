@@ -23,6 +23,11 @@ var networkDetails = networkDetails || {
     networkDetails.network_ = network;
 
     var doc = networkDetails.doc_;
+    registerNetworkIcon(doc, 'details');
+
+    var icon = doc.querySelector('#network_icon');
+    icon.setNetwork(network);
+
     var name = doc.querySelector('#network_name');
     name.innerText = getText('Network: ', [network['Name']]);
 

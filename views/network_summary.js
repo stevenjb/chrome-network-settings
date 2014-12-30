@@ -60,7 +60,7 @@ var networkSummary = networkSummary || {
   networkSummary.unInit = function() {
     log("networkSummary:unInit: " + this.observerAdded_);
     if (this.observerAdded_) {
-      networkState.removeObserver(this)
+      networkState.removeObserver(this);
       this.observerAdded_ = false;
     }
     this.doc_ = null;
