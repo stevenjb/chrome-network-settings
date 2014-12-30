@@ -124,6 +124,18 @@ var networkState = networkState || {
     networkState.observers_.push(observer);
   };
 
+  networkState.removeObserver = function(observer) {
+    var len = networkState.observers_.length;
+    for (var i = 0; i < len; ++i) {
+      if (networkState.observers_[i] == observer) {
+        networkState.observers_.splice(i, 1);
+        log('networkState:removeObserver: ' + networkState.observers_.length);
+        return;
+      }
+    }
+    log('!!! networkState:Observer not found !!!');
+  };
+
   networkState.addNetworkObserver = function(networkId, observer) {
     log('networkState:addNetworkObserver: ' + networkId);
     if (!(networkId in networkState.networkObservers_))
@@ -133,16 +145,13 @@ var networkState = networkState || {
 
   networkState.removeNetworkObserver = function(networkId, observer) {
     log('networkState:removeNetworkObserver: ' + networkId);
-    if (!(networkId in networkState.networkObservers_))
-      return;
     for (var id in networkState.networkObservers_) {
       if (id != networkId)
         continue;
-      var observers = networkState.networkObservers_[id];
-      var len = observers.length;
+      var len = networkState.networkObservers_[id].length;
       for (var i = 0; i < len; ++i) {
-        if (observers[i] == observer) {
-          networkState.networkObservers_[id] = observers.splice(i, 1);
+        if (networkState.networkObservers_[id][i] == observer) {
+          networkState.networkObservers_[id].splice(i, 1);
           return;
         }
       }

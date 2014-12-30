@@ -9,6 +9,7 @@ function registerNetworkListSelect(doc) {
 
   networkListSelectPrototype.addNetwork = function(network) {
     var n = this.ownerDocument.createElement('network-list-item');
+    assert(n.setNetwork);
     n.setNetwork(network);
     n.onClickFunc = networkListSelectPrototype.clickNetwork.bind(this);
     this.listNode_.appendChild(n);

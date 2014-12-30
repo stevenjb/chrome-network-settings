@@ -1,4 +1,4 @@
-function registerNetworkListItem(doc) {
+function registerNetworkListItem(doc, listType) {
 
   var networkListItemPrototype = Object.create(HTMLElement.prototype);
 
@@ -33,12 +33,29 @@ function registerNetworkListItem(doc) {
     }
     this.style.display = undefined;  // inherit
 
-    if (network['Type'] == 'WiFi')
-      this.icon_.src = '../assets/wifi_dark_100.png';
+    var state = network['ConnectionState'];
+    var type = network['Type'];
+    var strength = network['Strength'];
+    var iconType;
+    var iconAmt;
+    if (type == 'WiFi') {
+      iconType = 'wifi';
+      if (listType == 'summary' && state != 'Connected')
+        iconAmt = '00';
+      else if (strength <= 25)
+        iconAmt = '25';
+      else if (strength <= 50)
+        iconAmt = '50';
+      else if (strength <= 75)
+        iconAmt = '75';
+      else
+        iconAmt = '100';
+    }
+    if (iconType)
+      this.icon_.src = '../assets/' + iconType + '_' + iconAmt + '.png';
 
     this.name_.textContent = network['Name'];
 
-    var state = network['ConnectionState'];
     this.state_.className = state;
     this.state_.textContent = getText(state);
   };

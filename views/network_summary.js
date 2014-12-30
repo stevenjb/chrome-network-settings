@@ -1,7 +1,8 @@
 var networkSummary = networkSummary || {
   parentWin_: null,
   contentWin_: null,
-  doc_: null
+  doc_: null,
+  observerAdded_: false
 };
 
 (function() {
@@ -41,7 +42,7 @@ var networkSummary = networkSummary || {
     networkSummary.doc_ = contentWin.document;
 
     var doc = networkSummary.doc_;
-    registerNetworkListItem(doc);
+    registerNetworkListItem(doc, 'summary');
 
     doc.querySelector('#more').onclick = onMore;
 
@@ -50,7 +51,19 @@ var networkSummary = networkSummary || {
       items[i].onClickFunc = networkSummary.onNetworkClicked_.bind(this);
 
     networkSummary.onNetworkStateChanged();
-    networkState.addObserver(this);
+    if (!this.observerAdded_) {
+      networkState.addObserver(this);
+      this.observerAdded_ = true;
+    }
+  };
+
+  networkSummary.unInit = function() {
+    log("networkSummary:unInit: " + this.observerAdded_);
+    if (this.observerAdded_) {
+      networkState.removeObserver(this)
+      this.observerAdded_ = false;
+    }
+    this.doc_ = null;
   };
 
 })();

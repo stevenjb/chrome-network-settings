@@ -34,6 +34,12 @@ function log(msg) {
   console.log(msg);
 }
 
+function assert(condition, message) {
+  if (condition)
+    return;
+  throw message || 'Assertion Failed';
+}
+
 // Window management
 
 function createWindow() {
@@ -67,6 +73,10 @@ function frameLoaded() {
 
 function setContent(html) {
   log('setContent: ' + html);
+
+  networkList.unInit();
+  networkSummary.unInit();
+
   var win = getWin();
   var content = win.document.querySelector('#content');
   //content.contentWindow.addEventListener('load', contentLoaded);
@@ -135,12 +145,10 @@ function networkListLoaded() {
 // NetworkDetails
 
 var networkDetailsNetworkId;
-var networkDetailsOpendFrom = '';
 
 function showNetwork(networkId, from) {
   log('showNetwork: ' + networkId);
-  if (networkDetailsNetworkId == undefined)
-    networkDetails.init(this);
+  networkDetails.init(this);
 
   networkDetailsNetworkId = networkId;
   setContent('network_details.html');
