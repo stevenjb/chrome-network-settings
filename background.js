@@ -85,16 +85,21 @@ function setContent(html) {
   content.src = 'views/' + html;
 }
 
+var previousView;
+
 function contentLoaded() {
   var win = getWin();
   var content = win.document.querySelector('#content');
   log('contentLoaded: ' + content.srcName);
-  if (content.srcName == 'network_list.html')
-    networkListLoaded();
-  else if (content.srcName == 'network_details.html')
-    networkDetailsLoaded();
-  else if (content.srcName == 'network_summary.html')
+  if (content.srcName == 'network_summary.html') {
+    previousView = content.srcName;
     networkSummaryLoaded();
+  } else if (content.srcName == 'network_list.html') {
+    previousView = content.srcName;
+    networkListLoaded();
+  } else if (content.srcName == 'network_details.html') {
+    networkDetailsLoaded();
+  }
 }
 
 function getContent() {
@@ -133,7 +138,10 @@ function showNetworkList() {
 }
 
 function closeDetails() {
-  setContent(initialContent);
+  if (previousView)
+    setContent(previousView);
+  else
+    setContent(initialContent);
 }
 
 function networkListLoaded() {

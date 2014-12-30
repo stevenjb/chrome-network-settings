@@ -7,6 +7,10 @@ var networkList = networkList || {
 };
 
 (function() {
+  function onBack(event) { 
+    networkList.parentWin_.showNetworkSummary(); 
+  }
+
   networkList.onNetworkClicked_ = function(guid) {
     log('networkList.onNetworkClicked: ' + guid);
     this.parentWin_.showNetwork(guid);
@@ -31,11 +35,12 @@ var networkList = networkList || {
     var doc = contentWin.document;
     assert(doc);
     networkList.doc_ = doc;
-    registerNetworkListItem(doc, 'list');
+
     registerNetworkListSelect(doc);
 
-    this.doc_.querySelector('#network-entries').onClickFunc =
+    doc.querySelector('#network-entries').onClickFunc =
         networkList.onNetworkClicked_.bind(this);
+    doc.querySelector('#back').onclick = onBack;
 
     networkList.onNetworkListChanged(networkState.networks);
     if (!this.observerAdded_) {
