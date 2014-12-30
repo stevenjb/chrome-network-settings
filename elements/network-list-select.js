@@ -1,8 +1,8 @@
 function registerNetworkListSelect(doc) {
 
-  var networkListSelectPrototype = Object.create(HTMLElement.prototype);
-
   registerNetworkListItem(doc, 'list');
+
+  var networkListSelectPrototype = Object.create(HTMLElement.prototype);
 
   networkListSelectPrototype.clickNetwork = function(guid) {
     if (this.onClickFunc)

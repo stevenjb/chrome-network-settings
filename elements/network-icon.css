@@ -1,0 +1,20 @@
+network-icon::shadow div {
+    border-style: none;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+}
+
+network-icon::shadow #icon {
+    height: 100%;
+    width: 100%;
+}
+
+network-icon::shadow #badge {
+    display: inline;
+    height: 50%;
+    margin-left: -50%;
+    margin-top: 50%;
+    width: 50%;
+}

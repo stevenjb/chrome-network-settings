@@ -10,17 +10,8 @@ network-list-item div:hover {
 
 network-list-item #icon {
     height: 32px;
-    vertical-align: middle;
     width: 32px;
-}
-
-network-list-item #badge {
-    display: inline;
-    height: 16px;
-    margin-left: -16px;
-    margin-top: 16px;
     vertical-align: middle;
-    width: 16px;
 }
 
 network-list-item #name {
