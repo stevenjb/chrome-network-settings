@@ -12,6 +12,12 @@ var networkDetails = networkDetails || {
     networkDetails.parentWin_.closeDetails(); 
   }
 
+  function setText(data, select, property) {
+    var value = getText(data[property]);
+    networkDetails.doc_.querySelector(select).innerText =  
+        getText(property, [ value ]);
+  };
+
   // networkState Observer
   networkDetails.onNetworkChanged = function(network) {
     log('networkDetails:onNetworkChanged: ' +
@@ -25,17 +31,43 @@ var networkDetails = networkDetails || {
     var doc = networkDetails.doc_;
     registerNetworkIcon(doc, 'details');
 
-    var icon = doc.querySelector('#network_icon');
+    var icon = doc.querySelector('#network-icon');
     icon.setNetwork(network);
 
-    var name = doc.querySelector('#network_name');
-    name.innerText = getText('Network: ', [network['Name']]);
+    doc.querySelector('#network-name').innerText = network['Name'];
 
-    var guid = doc.querySelector('#network_id');
-    guid.innerText = getText('ID: ', [network['GUID']]);
+    var stateNode = doc.querySelector('#network-state');
+    var stateName = network['ConnectionState'];
+    stateNode.className = stateName;
+    stateNode.innerText = getText(stateName);
 
-    var state = doc.querySelector('#network_state');
-    state.innerText = getText('State: ', [network['ConnectionState']]);
+    setText(network, '#connectable', 'Connectable');
+
+    var type = network['Type'];
+    if (type == 'WiFi') {
+      var wifi = network['WiFi'];
+      if (wifi) {
+        doc.querySelector('#details-wifi').display = undefined;
+        setText(wifi, '#details-wifi #security', 'Security');
+        setText(wifi, '#details-wifi #signal-strength', 'SignalStrength');
+      }
+    } else {
+      doc.querySelector('#details-wifi').display = 'none';
+    }
+    if (type == 'Cellular') {
+      var cellular = network['Cellular'];
+      if (cellular) {
+        doc.querySelector('#details-cellular').display = undefined;
+        setText(cellular, 
+                '#details-cellular #network-technology', 'NetworkTechnology');
+        setText(cellular, 
+                '#details-cellular #activation-state', 'ActivationState');
+        setText(cellular, 
+                '#details-cellular #romaing-state', 'RomaingState');
+      }
+    } else {
+      doc.querySelector('#details-cellular').display = 'none';
+    }
   };
 
   // networkDetails functions

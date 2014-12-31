@@ -8,12 +8,29 @@
 
 <body>
   <button id="back">Back</button>
-  <div id="title" class="drag">
-    <network-icon id="network_icon"></network-icon>
-    <span id="network_name"></span>
+
+  <div id="header">
+    <div id="icon">
+      <network-icon id="network-icon"></network-icon>
+    </div>
+    <div id="title">
+      <p><span id="network-name"></span></p>
+      <p><span id="network-state"></span></p>
+    </div>
   </div>
-  <p><span id="network_id"></span></p>
-  <p><span id="network_state"></span></p>
+
+  <div id="details">
+    <p><span id="connectable"></span></p>
+    <div id="details-wifi">
+      <p><span id="security"></span></p>
+      <p><span id="signal-strength"></span></p>
+    </div>
+    <div id="details-cellular">
+      <p><span id="network-technology"></span></p>
+      <p><span id="activation-state"></span></p>
+      <p><span id="roaming-state"></span></p>
+    </div>
+  </div>
 </body>
 
 </html>
