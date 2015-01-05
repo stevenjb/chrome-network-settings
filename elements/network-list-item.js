@@ -1,6 +1,16 @@
 function registerNetworkListItem(doc, listType) {
 
-  registerNetworkIcon(doc, 'list');
+  registerNetworkIcon(doc, listType);
+
+  function getConnectionStateText(stateName, networkName) {
+    if (stateName == 'Connected')
+      return getText("Connected to %1", [ networkName]);
+    if (stateName == 'Connecting')
+      return getText("Connecting to %1...", [ networkName]);
+    if (stateName == 'NotConnected')
+      return getText("Not Connected");
+    return getText(stateName);
+  };
 
   var networkListItemPrototype = Object.create(HTMLElement.prototype);
 
@@ -13,18 +23,29 @@ function registerNetworkListItem(doc, listType) {
     var template = doc.createElement('template');
     template.id = 'networkListItemTemplate';
 
-    var div = doc.createElement('div');
+    var div1 = doc.createElement('div');
+    div1.id = 'div-outer';
+
+    var divIcon = doc.createElement('div');
+    divIcon.id = 'div-icon';
+    divIcon.className = listType;
     var icon = doc.createElement('network-icon');
     icon.id = 'icon';
-    div.appendChild(icon);
+    divIcon.appendChild(icon);
+    div1.appendChild(divIcon);
+
+    var divText = doc.createElement('div');
+    divText.id = 'div-text';
+    divText.className = listType;
     var name = doc.createElement('span');
     name.id = 'name';
-    div.appendChild(name);
+    divText.appendChild(name);
     var state = doc.createElement('span');
     state.id = 'state';
-    div.appendChild(state);
+    divText.appendChild(state);
+    div1.appendChild(divText);
 
-    template.content.appendChild(div);
+    template.content.appendChild(div1);
 
     doc.head.appendChild(template);
   };
@@ -37,7 +58,7 @@ function registerNetworkListItem(doc, listType) {
     var clone = doc.importNode(template.content, true);
     this.root_.appendChild(clone);
 
-    var css = ':host { display: inline-block; }';
+    var css = ':host { display: inline-block; flex: 0 0 auto; }';
     var style = doc.createElement('style');
     style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
@@ -56,12 +77,24 @@ function registerNetworkListItem(doc, listType) {
     this.style.display = undefined;  // inherit
 
     this.root_.querySelector('#icon').setNetwork(network);
-    this.root_.querySelector('#name').textContent = network['Name'];
 
+    var networkType = network['Type'];
+    var networkName = network['Name'];
     var stateName = network['ConnectionState'];
+    var nameNode = this.root_.querySelector('#name');
     var stateNode = this.root_.querySelector('#state');
-    stateNode.className = stateName;
-    stateNode.textContent = getText(stateName);
+
+    if (listType == 'summary') {
+      nameNode.className = '';
+      nameNode.textContent = getText(networkType);
+      stateNode.display = undefined;  // inherit
+      stateNode.className = stateName;
+      stateNode.textContent = getConnectionStateText(stateName, networkName);
+    } else {
+      nameNode.className = stateName;
+      nameNode.textContent = networkName;
+      stateNode.display = 'none';
+    }
   };
 
   createTemplate(doc);

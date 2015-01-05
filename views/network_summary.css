@@ -1,0 +1,8 @@
+div#network-types {
+    display: flex;
+    flex-direction: column;
+}
+
+div#network-types network-list-item {
+    margin-bottom: 12px;
+}

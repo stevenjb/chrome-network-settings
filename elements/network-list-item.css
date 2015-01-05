@@ -1,11 +1,27 @@
-network-list-item::shadow div {
+network-list-item::shadow div#div-outer {
     border-style: none;
+    display: flex;
+    flex-direction: row;
     margin: 0px;
     padding: 4px;
 }
 
-network-list-item::shadow div:hover {
+network-list-item::shadow div#div-outer:hover {
     background-color: lightgrey;
+}
+
+network-list-item::shadow div#div-outer div {
+    flex: 0 0 auto;
+}
+
+network-list-item::shadow div#div-outer div.summary {
+    display: flex;
+    flex-direction: column;
+}
+
+network-list-item::shadow div#div-outer div.list {
+    display: flex;
+    flex-direction: row;
 }
 
 network-list-item::shadow #icon {

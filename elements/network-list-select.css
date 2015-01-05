@@ -1,5 +1,7 @@
 network-list-select #container-div {
     border-style: solid;
     border-width: 1px;
+    display: flex;
+    flex-direction: column;
     padding: 4px;
 }

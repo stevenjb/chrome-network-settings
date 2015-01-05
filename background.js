@@ -25,9 +25,10 @@ function getText(text, args) {
   var res = text;
   if (!args)
     return res;
-  // TODO(stevenjb): Proper substitution
-  for (var i = 0; i < args.length; ++i)
-    res += ': ' + args[i];
+  for (var i = 0; i < args.length; ++i) {
+    var key = '%' + (i + 1);
+    res = res.replace(key, args[i]);
+  }
   return res;
 }
 

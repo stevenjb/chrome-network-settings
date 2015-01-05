@@ -15,7 +15,7 @@ var networkDetails = networkDetails || {
   function setText(data, select, property) {
     var value = getText(data[property]);
     networkDetails.doc_.querySelector(select).innerText =  
-        getText(property, [ value ]);
+        getText("%1: %2", [property, value ]);
   };
 
   // networkState Observer
