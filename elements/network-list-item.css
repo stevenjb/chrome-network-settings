@@ -4,42 +4,60 @@ network-list-item::shadow div#div-outer {
     flex-direction: row;
     margin: 0px;
     padding: 4px;
+    width: 100%;
 }
 
 network-list-item::shadow div#div-outer:hover {
     background-color: lightgrey;
 }
 
-network-list-item::shadow div#div-outer div {
+network-list-item::shadow div#div-icon {
+    display: flex;
     flex: 0 0 auto;
-}
-
-network-list-item::shadow div#div-outer div.summary {
-    display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
-network-list-item::shadow div#div-outer div.list {
+network-list-item::shadow network-icon#icon {
+    height: 32px;
+    width: 32px;
+}
+
+network-list-item::shadow div#div-detail {
     display: flex;
+    flex: 1 0 auto;
     flex-direction: row;
 }
 
-network-list-item::shadow #icon {
-    height: 32px;
-    width: 32px;
-    vertical-align: middle;
+network-list-item::shadow div#div-text {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    justify-content: center;
 }
 
-network-list-item::shadow #name {
+network-list-item::shadow span#name {
     margin-left: 8px;
 }
 
-network-list-item::shadow #state {
+network-list-item::shadow span#state {
     margin-left: 8px;
 }
 
 network-list-item::shadow span.Connected,span.Connecting {
     font-weight: bold;
+}
+
+network-list-item::shadow div#div-info {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: center;
+}
+
+network-list-item::shadow img#info-icon {
+    height: 24px;
+    width: 24px;
 }
 
 /* TODO(stevenjb): Figure out how to apply network-icon.css within the

@@ -1,53 +1,71 @@
-function registerNetworkListItem(doc, listType) {
+function registerNetworkListItem(doc, defaultListType) {
 
-  registerNetworkIcon(doc, listType);
+  registerNetworkIcon(doc, defaultListType);
 
   function getConnectionStateText(stateName, networkName) {
     if (stateName == 'Connected')
-      return getText("Connected to %1", [ networkName]);
+      return getText('Connected to %1', [ networkName]);
     if (stateName == 'Connecting')
-      return getText("Connecting to %1...", [ networkName]);
+      return getText('Connecting to %1...', [ networkName]);
     if (stateName == 'NotConnected')
-      return getText("Not Connected");
+      return getText('Not Connected');
     return getText(stateName);
   };
 
   var networkListItemPrototype = Object.create(HTMLElement.prototype);
 
-  networkListItemPrototype.clickNetwork = function() {
-    if (this.onClickFunc)
-      this.onClickFunc(this.guid_);
+  networkListItemPrototype.clickNetwork = function(element) {
+    if (!this.onClickFunc)
+      return;
+    this.onClickFunc(this.network_, element.srcElement.id);
   };
 
   function createTemplate(doc) {
     var template = doc.createElement('template');
     template.id = 'networkListItemTemplate';
 
-    var div1 = doc.createElement('div');
-    div1.id = 'div-outer';
+    var divOuter = doc.createElement('div');
+    divOuter.id = 'div-outer';
 
     var divIcon = doc.createElement('div');
     divIcon.id = 'div-icon';
-    divIcon.className = listType;
     var icon = doc.createElement('network-icon');
     icon.id = 'icon';
     divIcon.appendChild(icon);
-    div1.appendChild(divIcon);
+    divOuter.appendChild(divIcon);
+
+    var divDetail = doc.createElement('div');
+    divDetail.id = 'div-detail';
 
     var divText = doc.createElement('div');
     divText.id = 'div-text';
-    divText.className = listType;
     var name = doc.createElement('span');
     name.id = 'name';
     divText.appendChild(name);
     var state = doc.createElement('span');
     state.id = 'state';
     divText.appendChild(state);
-    div1.appendChild(divText);
+    divDetail.appendChild(divText);
 
-    template.content.appendChild(div1);
+    var divInfo = doc.createElement('div');
+    divInfo.id = 'div-info';
+    var infoIcon = doc.createElement('img');
+    infoIcon.id = 'info-icon';
+    infoIcon.src = '../assets/info_64.png';
+    divInfo.appendChild(infoIcon);
+    divDetail.appendChild(divInfo);
+
+    divOuter.appendChild(divDetail);
+
+    template.content.appendChild(divOuter);
 
     doc.head.appendChild(template);
+  };
+
+  networkListItemPrototype.setListType = function(listType) {
+    this.listType_ = listType;
+    this.root_.querySelector('#div-icon').className = listType;
+    this.root_.querySelector('#div-text').className = listType;
   };
 
   networkListItemPrototype.createdCallback = function() {
@@ -64,36 +82,44 @@ function registerNetworkListItem(doc, listType) {
     style.appendChild(document.createTextNode(css));
     this.root_.appendChild(style);
 
-    this.onclick = networkListItemPrototype.clickNetwork.bind(this);
+    this.root_.querySelector('#div-outer').onclick =
+        networkListItemPrototype.clickNetwork.bind(this);
+
+    this.setListType(defaultListType);
   };
 
   networkListItemPrototype.setNetwork = function(network) {
-    this.guid_ = network['GUID'];
-
     if (!network) {
       this.style.display = 'none';
       return;
     }
-    this.style.display = undefined;  // inherit
+    this.style.display = 'inherit';
+
+    this.network_ = network;
 
     this.root_.querySelector('#icon').setNetwork(network);
 
     var networkType = network['Type'];
     var networkName = network['Name'];
-    var stateName = network['ConnectionState'];
+    var networkState = network['ConnectionState'];
     var nameNode = this.root_.querySelector('#name');
     var stateNode = this.root_.querySelector('#state');
-
-    if (listType == 'summary') {
+    var infoNode = this.root_.querySelector('#div-info');
+    if (this.listType_ == 'summary') {
       nameNode.className = '';
       nameNode.textContent = getText(networkType);
-      stateNode.display = undefined;  // inherit
-      stateNode.className = stateName;
-      stateNode.textContent = getConnectionStateText(stateName, networkName);
+      stateNode.style.display = 'inherit';
+      stateNode.className = networkState;
+      stateNode.textContent = getConnectionStateText(networkState, networkName);
+      if (networkState == 'NotConnected')
+        infoNode.style.display = 'none';
+      else
+        infoNode.style.display = 'inherit';
     } else {
-      nameNode.className = stateName;
+      nameNode.className = networkState;
       nameNode.textContent = networkName;
-      stateNode.display = 'none';
+      stateNode.style.display = 'none';
+      infoNode.style.display = 'inherit';
     }
   };
 

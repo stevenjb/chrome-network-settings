@@ -135,7 +135,10 @@ function networkSummaryLoaded() {
 
 // NetworkList
 
-function showNetworkList() {
+var networkListType;
+
+function showNetworkList(networkType) {
+  networkListType = networkType;
   setContent('network_list.html');
 }
 
@@ -147,9 +150,9 @@ function closeDetails() {
 }
 
 function networkListLoaded() {
-  log('networkListLoaded');
+  log('networkListLoaded: ' + networkListType);
   var content = getContent();
-  networkList.init(this, content.contentWindow);
+  networkList.init(this, content.contentWindow, networkListType);
 }
 
 // NetworkDetails

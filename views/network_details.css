@@ -1,41 +1,65 @@
-network-icon {
-    height: 48px;
-    width: 48px;
-    padding-right: 8px;
-}
-
 div#header {
     display: flex;
+    flex-direction: column;
 }
 
-div#header #icon {
-    margin-top: 8px;
+div#network {
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    margin-top: 16px;
 }
 
-div#header div#title {
-    margin-left: 4px;
+div#network div#icon {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: center;
 }
 
-div#header div#title p {
-    margin: 8px;
+div#network div#icon network-icon {
+    height: 48px;
+    padding-bottom: 8px;
+    width: 48px;
 }
 
-div#header #network-name {
-    font-size: 24px;
+div#network div#title {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 8px;
+}
+
+div#title #network-name {
+    font-size: 20px;
     font-weight: bold;
 }
 
-div#header #network-state {
-    font-size: 18px;
+div#title #network-state {
+    font-size: 16px;
+    margin-top: 4px;
 }
 
-div#header #network-state.Connected,#network-state.Connecting {
+div#title #network-state.Connected,#network-state.Connecting {
     font-weight: bold;
 }
 
 div#details {
     border-style: solid;
     border-width: 1px;
+    display: flex;
+    flex-direction: column;
     margin: 2px;
+    margin-top: 12px;
     padding: 4px;
+}
+
+div#details div {
+    display: flex;
+    flex-direction: column;
+}
+
+div#details span {
+    margin-bottom: 4px;
 }

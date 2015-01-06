@@ -15,13 +15,25 @@ var networkDetails = networkDetails || {
   function setText(data, select, property) {
     var value = getText(data[property]);
     networkDetails.doc_.querySelector(select).innerText =  
-        getText("%1: %2", [property, value ]);
+        getText('%1: %2', [property, value ]);
+  };
+
+  networkDetails.onDisconnectNetwork_ = function() {
+    var guid = this.networkId_;
+    log('networkDetails.onDisconnectNetwork: ' + guid);
+    chrome.networkingPrivate.startDisconnect(guid);
+  };
+
+  networkDetails.onConnectNetwork_ = function() {
+    var guid = this.networkId_;
+    log('networkDetails.onConnectNetwork: ' + guid);
+    chrome.networkingPrivate.startConnect(guid);
   };
 
   // networkState Observer
   networkDetails.onNetworkChanged = function(network) {
-    log('networkDetails:onNetworkChanged: ' +
-        JSON.stringify(network, null, ' '));
+    // log('networkDetails:onNetworkChanged: ' +
+    //     JSON.stringify(network, null, ' '));
     if (network['GUID'] != networkDetails.networkId_)
       return;
 
@@ -29,7 +41,6 @@ var networkDetails = networkDetails || {
     networkDetails.network_ = network;
 
     var doc = networkDetails.doc_;
-    registerNetworkIcon(doc, 'details');
 
     var icon = doc.querySelector('#network-icon');
     icon.setNetwork(network);
@@ -47,17 +58,17 @@ var networkDetails = networkDetails || {
     if (type == 'WiFi') {
       var wifi = network['WiFi'];
       if (wifi) {
-        doc.querySelector('#details-wifi').display = undefined;
+        doc.querySelector('#details-wifi').style.display = 'inherit';
         setText(wifi, '#details-wifi #security', 'Security');
         setText(wifi, '#details-wifi #signal-strength', 'SignalStrength');
       }
     } else {
-      doc.querySelector('#details-wifi').display = 'none';
+      doc.querySelector('#details-wifi').style.display = 'none';
     }
     if (type == 'Cellular') {
       var cellular = network['Cellular'];
       if (cellular) {
-        doc.querySelector('#details-cellular').display = undefined;
+        doc.querySelector('#details-cellular').style.display = 'inherit';
         setText(cellular, 
                 '#details-cellular #network-technology', 'NetworkTechnology');
         setText(cellular, 
@@ -66,7 +77,20 @@ var networkDetails = networkDetails || {
                 '#details-cellular #romaing-state', 'RomaingState');
       }
     } else {
-      doc.querySelector('#details-cellular').display = 'none';
+      doc.querySelector('#details-cellular').style.display = 'none';
+    }
+
+    if (network && network['Type'] == 'WiFi') {
+      if (network['ConnectionState'] == 'NotConnected') {
+        doc.querySelector('#connect').style.display = 'inherit';
+        doc.querySelector('#disconnect').style.display = 'none';
+      } else {
+        doc.querySelector('#connect').style.display = 'none';
+        doc.querySelector('#disconnect').style.display = 'inherit';
+      }
+    } else {
+      doc.querySelector('#connect').style.display = 'none';
+      doc.querySelector('#disconnect').style.display = 'none';
     }
   };
 
@@ -84,6 +108,11 @@ var networkDetails = networkDetails || {
 
     var doc = networkDetails.doc_;
     doc.querySelector('#back').onclick = onBack;
+    doc.querySelector('#disconnect').onclick =
+        networkDetails.onDisconnectNetwork_.bind(this);
+    doc.querySelector('#connect').onclick =
+        networkDetails.onConnectNetwork_.bind(this);
+    registerNetworkIcon(doc, 'details');
   };
 
   networkDetails.setNetworkId = function(networkId) {

@@ -7,13 +7,13 @@ var networkSummary = networkSummary || {
 
 (function() {
 
-  function onMore(event) {
-    networkSummary.parentWin_.showNetworkList();
-  }
-
-  networkSummary.onNetworkClicked_ = function(guid) {
+  networkSummary.onNetworkClicked_ = function(type, network, which) {
+    var guid = network['GUID'];
     log('networkSummary.onNetworkClicked: ' + guid);
-    this.parentWin_.showNetwork(guid);
+    if (which != 'info-icon' && type == 'wifi')
+      networkSummary.parentWin_.showNetworkList('WiFi', guid);
+    else
+      networkSummary.parentWin_.showNetwork(guid);
   };
 
   // networkState Observer
@@ -26,7 +26,6 @@ var networkSummary = networkSummary || {
       var item = doc.querySelector('#' + id);
       item.setNetwork(network);
     }
-
     updateItem('ethernet', networkState.ethernet);
     updateItem('wifi', networkState.wifi);
     updateItem('mobile', networkState.mobile);
@@ -44,11 +43,16 @@ var networkSummary = networkSummary || {
     var doc = networkSummary.doc_;
     registerNetworkListItem(doc, 'summary');
 
-    doc.querySelector('#more').onclick = onMore;
-
-    var items = this.doc_.querySelectorAll('network-list-item');
-    for (var i = 0; i < items.length; ++i)
-      items[i].onClickFunc = networkSummary.onNetworkClicked_.bind(this);
+    function setItemClicked(type) {
+      var item = doc.querySelector('#' + type);
+      item.onClickFunc = function(network, which) {
+        networkSummary.onNetworkClicked_(type, network, which);
+      };
+    }
+    setItemClicked('ethernet');
+    setItemClicked('wifi');
+    setItemClicked('mobile');
+    setItemClicked('vpn');
 
     networkSummary.onNetworkStateChanged();
     if (!this.observerAdded_) {
@@ -58,7 +62,7 @@ var networkSummary = networkSummary || {
   };
 
   networkSummary.unInit = function() {
-    log("networkSummary:unInit: " + this.observerAdded_);
+    log('networkSummary:unInit: ' + this.observerAdded_);
     if (this.observerAdded_) {
       networkState.removeObserver(this);
       this.observerAdded_ = false;

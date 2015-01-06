@@ -4,9 +4,9 @@ function registerNetworkListSelect(doc) {
 
   var networkListSelectPrototype = Object.create(HTMLElement.prototype);
 
-  networkListSelectPrototype.clickNetwork = function(guid) {
+  networkListSelectPrototype.clickNetwork = function(network, which) {
     if (this.onClickFunc)
-      this.onClickFunc(guid);
+      this.onClickFunc(network, which);
   };
 
   networkListSelectPrototype.addNetwork = function(network) {

@@ -1,4 +1,4 @@
-function registerNetworkIcon(doc, listType) {
+function registerNetworkIcon(doc, defaultListType) {
 
   var networkIconPrototype = Object.create(HTMLElement.prototype);
 
@@ -32,6 +32,12 @@ function registerNetworkIcon(doc, listType) {
     style.type = 'text/css';
     style.appendChild(document.createTextNode(css));
     this.root_.appendChild(style);
+
+    this.setListType(defaultListType);
+  };
+
+  networkIconPrototype.setListType = function(listType) {
+    this.listType_ = listType;
   };
 
   networkIconPrototype.setNetwork = function(network) {
@@ -53,11 +59,6 @@ function registerNetworkIcon(doc, listType) {
       }
     } else if (type == 'Cellular') {
       iconType = 'mobile';
-      var wifi = network['WiFi'];
-      if (wifi)
-        strength = wifi['SignalStrength'];
-    } else if (type == 'Cellular') {
-      iconType = 'mobile';
       var cellular = network['Cellular'];
       if (cellular)
         strength = cellular['SignalStrength'];
@@ -70,7 +71,7 @@ function registerNetworkIcon(doc, listType) {
       iconType = 'vpn';
     }
     if (iconType == 'wifi' || iconType == 'mobile') {
-      if (listType == 'summary' && state != 'Connected')
+      if (this.listType_ == 'summary' && state != 'Connected')
         iconAmt = '00';
       else if (strength <= 25)
         iconAmt = '25';
@@ -96,6 +97,23 @@ function registerNetworkIcon(doc, listType) {
     } else {
       badge.style.display = 'none';
     }
+  };
+
+  networkIconPrototype.setNetworkType = function(type) {
+    var iconSrc = 'ethernet';
+    if (type == 'WiFi') {
+      iconSrc = 'wifi_00';
+    } else if (type == 'Cellular') {
+      iconSrc = 'mobile_00';
+    } else if (type == 'WiMAX') {
+      iconSrc = 'mobile_00';
+    } else if (type == 'VPN') {
+      iconSrc = 'vpn';
+    }
+    var icon = this.root_.querySelector('#icon');
+    var badge = this.root_.querySelector('#badge');
+    icon.src = '../assets/' + iconSrc + '.png';
+    badge.style.display = 'none';
   };
 
   createTemplate(doc);

@@ -8,8 +8,27 @@
 </head>
 
 <body>
-  <button id="back">Back</button>
-  <h1 id="title" class="drag">Network List</h1>
+  <div id="header">
+    <div id="back">
+      <button id="back">Back</button>
+    </div>
+    <div id="network">
+      <div id="icon">
+        <network-icon id="network-icon"></network-icon>
+      </div>
+      <div id="title">
+        <span id="network-type"></span>
+        <span id="network-state"></span>
+      </div>
+      <div id="info-icon">
+        <img id="info-icon" src="../assets/info_64.png"></img>
+      </div>
+    </div>
+    <div id="disconnect">
+      <button id="disconnect">Disconnect</button>
+    </div>
+  </div>
+  <h2>Visible Networks</h2>
   <network-list-select id="network-entries"></network-list-select>
 </body>
 

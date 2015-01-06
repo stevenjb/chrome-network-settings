@@ -30,7 +30,6 @@ var networkState = networkState || {
     var mobile = null;
     var vpn = null;
     for (var network of networks) {
-      var state = network['ConnectionState'];
       var type = network['Type'];
       if (!ethernet && type == 'Ethernet')
         ethernet = network;
