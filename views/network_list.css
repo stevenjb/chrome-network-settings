@@ -59,7 +59,7 @@ div#network div#info-icon img#info-icon {
 }
 
 network-list-select#network-entries #container-div {
-    /* height: 128px; */
+    height: 128px;
     margin-top: 16px;
     overflow: auto;
 }
