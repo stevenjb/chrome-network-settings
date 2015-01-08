@@ -1,4 +1,4 @@
-network-list-item::shadow div#div-outer {
+html /deep/ network-list-item::shadow div#div-outer {
     border-style: none;
     display: flex;
     flex-direction: row;
@@ -7,79 +7,55 @@ network-list-item::shadow div#div-outer {
     width: 100%;
 }
 
-network-list-item::shadow div#div-outer:hover {
+html /deep/ network-list-item::shadow div#div-outer:hover {
     background-color: lightgrey;
 }
 
-network-list-item::shadow div#div-icon {
+html /deep/ network-list-item::shadow div#div-icon {
     display: flex;
     flex: 0 0 auto;
     flex-direction: column;
     justify-content: center;
 }
 
-network-list-item::shadow network-icon#icon {
+html /deep/ network-list-item::shadow network-icon#icon {
     height: 32px;
     width: 32px;
 }
 
-network-list-item::shadow div#div-detail {
+html /deep/ network-list-item::shadow div#div-detail {
     display: flex;
     flex: 1 0 auto;
     flex-direction: row;
 }
 
-network-list-item::shadow div#div-text {
+html /deep/ network-list-item::shadow div#div-text {
     display: flex;
     flex: 1 0 auto;
     flex-direction: column;
     justify-content: center;
 }
 
-network-list-item::shadow span#name {
+html /deep/ network-list-item::shadow span#name {
     margin-left: 8px;
 }
 
-network-list-item::shadow span#state {
+html /deep/ network-list-item::shadow span#state {
     margin-left: 8px;
 }
 
-network-list-item::shadow span.Connected,span.Connecting {
+html /deep/ network-list-item::shadow span.Connected,span.Connecting {
     font-weight: bold;
 }
 
-network-list-item::shadow div#div-info {
+html /deep/ network-list-item::shadow div#div-info {
     display: flex;
     flex: 0 0 auto;
     flex-direction: column;
     justify-content: center;
 }
 
-network-list-item::shadow img#info-icon {
+html /deep/ network-list-item::shadow img#info-icon {
     height: 24px;
     width: 24px;
-}
-
-/* TODO(stevenjb): Figure out how to apply network-icon.css within the
-   network-list-item shadow dom */
-
-network-list-item::shadow network-icon::shadow div {
-    border-style: none;
-    margin: 0px;
-    padding: 0px;
-    height: 100%;
-    width: 100%;
-}
-
-network-list-item::shadow network-icon::shadow #icon {
-    height: 100%;
-    width: 100%;
-}
-
-network-list-item::shadow network-icon::shadow #badge {
-    display: inline;
-    height: 50%;
-    margin-left: -50%;
-    margin-top: 50%;
-    width: 50%;
 }
