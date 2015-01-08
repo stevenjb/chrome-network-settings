@@ -1,6 +1,23 @@
-div#header {
+body {
     display: flex;
     flex-direction: column;
+}
+
+div#div-outer {
+    display: flex;
+    flex-direction: column;
+}
+
+div#header {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
+
+div#header h2 {
+    flex: 0 0 auto;
+    margin: 8px;
 }
 
 div#network {
@@ -58,8 +75,19 @@ div#network div#info-icon img#info-icon {
     width: 24px;
 }
 
+div#visible-networks {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+}
+
+div#network-list {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+}
+
 network-list-select#network-entries #container-div {
-    height: 128px;
     margin-top: 16px;
     overflow: auto;
 }

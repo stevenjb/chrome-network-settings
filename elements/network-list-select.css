@@ -1,7 +1,9 @@
-network-list-select #container-div {
+html /deep/ network-list-select::shadow div#container-div {
     border-style: solid;
     border-width: 1px;
     display: flex;
     flex-direction: column;
+    flex: 1 1 auto;
+    overflow: auto;
     padding: 4px;
 }

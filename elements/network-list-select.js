@@ -14,21 +14,47 @@ function registerNetworkListSelect(doc) {
     assert(n.setNetwork);
     n.setNetwork(network);
     n.onClickFunc = networkListSelectPrototype.clickNetwork.bind(this);
-    this.listNode_.appendChild(n);
+    var containerDiv = this.root_.querySelector('#container-div');
+    containerDiv.appendChild(n);
   };
 
   networkListSelectPrototype.clearNetworks = function(node) {
-    while (this.listNode_.firstChild) {
-      this.listNode_.removeChild(this.listNode_.firstChild);
+    var containerDiv = this.root_.querySelector('#container-div');
+    while (containerDiv.firstChild) {
+      containerDiv.removeChild(containerDiv.firstChild);
     }
   };
 
+  function createTemplate(doc) {
+    var template = doc.createElement('template');
+    template.id = 'networkListSelectTemplate';
+
+    var containerDiv = doc.createElement('div');
+    containerDiv.id = 'container-div';
+
+    template.content.appendChild(containerDiv);
+    doc.head.appendChild(template);
+  }
+
   networkListSelectPrototype.createdCallback = function() {
-    console.log('networkListSelect created');
-    this.listNode_ = this.ownerDocument.createElement('div');
-    this.listNode_.id = 'container-div';
-    this.appendChild(this.listNode_);
+   this.root_ = this.createShadowRoot();
+
+    var doc = this.ownerDocument;
+    var template = doc.querySelector('#networkListSelectTemplate');
+    var clone = doc.importNode(template.content, true);
+    this.root_.appendChild(clone);
+
+    var css = ':host { '
+        + ' display: flex; flex-direction: column;'
+        + ' flex: 1 1 auto; width: 100%; height: 100%;'
+        + '}';
+    var style = doc.createElement('style');
+    style.type = 'text/css';
+    style.appendChild(document.createTextNode(css));
+    this.root_.appendChild(style);
   };
+
+  createTemplate(doc);
 
   var networkListSelectElement = doc.registerElement(
       'network-list-select', { prototype : networkListSelectPrototype });
