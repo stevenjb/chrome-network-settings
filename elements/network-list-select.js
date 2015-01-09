@@ -26,44 +26,19 @@ function registerNetworkListSelect(doc) {
   };
 
   function createTemplate(doc) {
-    var template = doc.createElement('template');
-    template.id = 'networkListSelectTemplate';
-
-    var containerDiv = doc.createElement('div');
-    containerDiv.id = 'container-div';
-
-    template.content.appendChild(containerDiv);
-    doc.head.appendChild(template);
+    var div = doc.createElement('div');
+    div.id = 'container-div';
+    return div;
   }
 
   networkListSelectPrototype.createdCallback = function() {
-   this.root_ = this.createShadowRoot();
-
-    var doc = this.ownerDocument;
-    var template = doc.querySelector('#networkListSelectTemplate');
-    var clone = doc.importNode(template.content, true);
-    this.root_.appendChild(clone);
-
-    var css = ':host { '
-        + ' display: flex; flex-direction: column;'
-        + ' flex: 1 1 auto; width: 100%; height: 100%;'
-        + '}';
-    var style = doc.createElement('style');
-    style.type = 'text/css';
-    style.appendChild(document.createTextNode(css));
-    this.root_.appendChild(style);
+    var hostCss = 'display: flex; flex-direction: column;'
+        + ' flex: 1 1 auto; width: 100%; height: 100%;';
+    this.root_ = componentHelper_.createShadowRoot(this, hostCss);
   };
 
-  createTemplate(doc);
-
-  var networkListSelectElement = doc.registerElement(
-      'network-list-select', { prototype : networkListSelectPrototype });
-
-  var css =  doc.createElement('link');
-  css.setAttribute('rel', 'stylesheet');
-  css.setAttribute('type', 'text/css');
-  css.setAttribute('href', '/elements/network-list-select.css');
-  doc.getElementsByTagName('head')[0].appendChild(css);
-
-  console.log('networkListSelect registered');
+  var componentHelper_ = new ComponentHelper(doc, 'network-list-select',
+                                             networkListSelectPrototype);
+  componentHelper_.register(createTemplate(doc));
+  componentHelper_.addCssFile('/elements/network-list-select.css');
 }

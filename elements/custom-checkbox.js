@@ -45,7 +45,6 @@ function registerCustomCheckbox(doc) {
 
     this.root_.querySelector('input').onchange =
         customCheckboxPrototype.onChange.bind(this);
-
   };
 
   customCheckboxPrototype.setProperty = function(propertyDict) {

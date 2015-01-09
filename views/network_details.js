@@ -65,7 +65,7 @@ var networkDetails = networkDetails || {
 
     var doc = networkDetails.doc_;
 
-    var icon = doc.querySelector('#network-icon');
+    var icon = doc.querySelector('#header network-icon');
     icon.setNetwork(network);
 
     doc.querySelector('#network-name').innerText = network['Name'];

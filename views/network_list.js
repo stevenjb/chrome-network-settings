@@ -81,11 +81,12 @@ var networkList = networkList || {
     if (networkList.type_ == 'WiFi')
       network = networkState.wifi;
     if (network) {
-      doc.querySelector('#network-icon').setNetwork(network);
+      doc.querySelector('#header network-icon').setNetwork(network);
       doc.querySelector('#network-state').innerText = 
           getConnectionStateText(network);
     } else {
-      doc.querySelector('#network-icon').setNetworkType(networkList.type_);
+      doc.querySelector('#header network-icon')
+          .setNetworkType(networkList.type_);
       doc.querySelector('#network-state').innerText = getText('Not Connected');
     }
     if (network && network['Type'] == 'WiFi' &&
@@ -119,7 +120,7 @@ var networkList = networkList || {
     doc.querySelector('#info-icon').onclick =
         networkList.onDefaultNetworkClicked_.bind(this);
     doc.querySelector('#network-type').innerText =  getText(type);
-    doc.querySelector('#network-icon').setListType('summary');
+    doc.querySelector('#header network-icon').setListType('summary');
     
     networkList.onNetworkListChanged(networkState.networks);
     networkList.onNetworkStateChanged();
@@ -137,5 +138,4 @@ var networkList = networkList || {
     }
     this.doc_ = null;
   };
-
 })();

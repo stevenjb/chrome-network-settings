@@ -3,9 +3,6 @@ function registerNetworkIcon(doc, defaultListType) {
   var networkIconPrototype = Object.create(HTMLElement.prototype);
 
   function createTemplate(doc) {
-    var template = doc.createElement('template');
-    template.id = 'networkIconTemplate';
-
     var div = doc.createElement('div');
     var icon = doc.createElement('img');
     icon.id = 'icon';
@@ -14,25 +11,12 @@ function registerNetworkIcon(doc, defaultListType) {
     badge.id = 'badge';
     div.appendChild(badge);
 
-    template.content.appendChild(div);
-
-    doc.head.appendChild(template);
+    return div;
   };
 
   networkIconPrototype.createdCallback = function() {
-    this.root_ = this.createShadowRoot();
-
-    var doc = this.ownerDocument;
-    var template = doc.querySelector('#networkIconTemplate');
-    var clone = doc.importNode(template.content, true);
-    this.root_.appendChild(clone);
-
-    var css = ':host { display: inline-block; }';
-    var style = doc.createElement('style');
-    style.type = 'text/css';
-    style.appendChild(document.createTextNode(css));
-    this.root_.appendChild(style);
-
+    var hostCss = 'display: inline-block;';
+    this.root_ = componentHelper_.createShadowRoot(this, hostCss);
     this.setListType(defaultListType);
   };
 
@@ -116,16 +100,8 @@ function registerNetworkIcon(doc, defaultListType) {
     badge.style.display = 'none';
   };
 
-  createTemplate(doc);
-
-  var networkIconElement = doc.registerElement(
-      'network-icon', { prototype : networkIconPrototype });
-
-  var css =  doc.createElement('link');
-  css.setAttribute('rel', 'stylesheet');
-  css.setAttribute('type', 'text/css');
-  css.setAttribute('href', '/elements/network-icon.css');
-  doc.getElementsByTagName('head')[0].appendChild(css);
-
-  console.log('networkIcon registered');
+  var componentHelper_ =
+      new ComponentHelper(doc, 'network-icon', networkIconPrototype);
+  componentHelper_.register(createTemplate(doc));
+  componentHelper_.addCssFile('/elements/network-icon.css');
 }
