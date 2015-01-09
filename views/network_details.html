@@ -29,20 +29,20 @@
     </div>
 
     <div id="settings">
-      <custom-checkbox oncproperty="WiFi.AutoConnect"/>
+      <custom-checkbox oncproperty="WiFi.AutoConnect"></custom-checkbox>
     </div>
 
     <div id="details">
-      <span id="connectable"></span>
-      <div id="details-wifi">
-        <span id="security"></span>
-        <span id="signal-strength"></span>
-      </div>
-      <div id="details-cellular">
-        <span id="network-technology"></span>
-        <span id="activation-state"></span>
-        <span id="roaming-state"></span>
-      </div>
+      <property-list-item oncproperty="Connectable"></property-list-item>
+      <property-list-item oncproperty="WiFi.Security"></property-list-item>
+      <property-list-item oncproperty="WiFi.SignalStrength">
+      </property-list-item>
+      <property-list-item oncproperty="Cellular.NetworkTechnology">
+      </property-list-item>
+      <property-list-item oncproperty="Cellular.ActivationState">
+      </property-list-item>
+      <property-list-item oncproperty="Cellular.RoamingState">
+      </property-list-item>
     </div>
 
   </div>

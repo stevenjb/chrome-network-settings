@@ -12,30 +12,9 @@ var networkDetails = networkDetails || {
     networkDetails.parentWin_.closeDetails(); 
   }
 
-  function setText(data, select, property) {
-    var value = getText(data[property]);
-    networkDetails.doc_.querySelector(select).innerText =  
-        getText('%1: %2', [property, value ]);
-  };
-
-  function setNestedProperty_(dict, key, value) {
-    var data = dict;
-    while (true) {
-      var index = key.indexOf('.');
-      if (index < 0)
-        break;
-      var keyComponent = key.substr(0, index);
-      if (!(keyComponent in data))
-        data[keyComponent] = {};
-      data = data[keyComponent];
-      key = key.substr(index + 1);
-    }
-    data[key] = value;
-  };
-
   networkDetails.onPropertyChanged_ = function(key, value) {
     var properties = {};
-    setNestedProperty_(properties, key, value);
+    PropertyUtil.setNestedProperty(properties, key, value);
     var guid = this.networkId_;
     log('networkDetails.onPropertyChanged: ' + guid + ": " + key + '=' + value);
     chrome.networkingPrivate.setProperties(guid, properties, function() {});
@@ -75,34 +54,6 @@ var networkDetails = networkDetails || {
     stateNode.className = stateName;
     stateNode.innerText = getText(stateName);
 
-    setText(network, '#connectable', 'Connectable');
-
-    var type = network['Type'];
-    if (type == 'WiFi') {
-      var wifi = network['WiFi'];
-      if (wifi) {
-        doc.querySelector('#details-wifi').style.display = 'inherit';
-        setText(wifi, '#details-wifi #security', 'Security');
-        setText(wifi, '#details-wifi #signal-strength', 'SignalStrength');
-      }
-    } else {
-      doc.querySelector('#details-wifi').style.display = 'none';
-    }
-    if (type == 'Cellular') {
-      var cellular = network['Cellular'];
-      if (cellular) {
-        doc.querySelector('#details-cellular').style.display = 'inherit';
-        setText(cellular, 
-                '#details-cellular #network-technology', 'NetworkTechnology');
-        setText(cellular, 
-                '#details-cellular #activation-state', 'ActivationState');
-        setText(cellular, 
-                '#details-cellular #romaing-state', 'RomaingState');
-      }
-    } else {
-      doc.querySelector('#details-cellular').style.display = 'none';
-    }
-
     if (network && network['Type'] == 'WiFi') {
       if (network['ConnectionState'] == 'NotConnected') {
         doc.querySelector('#connect').style.display = 'inherit';
@@ -118,7 +69,11 @@ var networkDetails = networkDetails || {
 
     var checkboxes = doc.querySelectorAll('custom-checkbox');
     for (var i = 0; i < checkboxes.length; ++i)
-      checkboxes[i].setProperty(network);
+      checkboxes[i].setPropertyFromDict(network);
+
+    var properties = doc.querySelectorAll('property-list-item');
+    for (var i = 0; i < properties.length; ++i)
+      properties[i].setPropertyFromDict(network);
   };
 
   // networkDetails functions
@@ -144,6 +99,8 @@ var networkDetails = networkDetails || {
     for (var i = 0; i < checkboxes.length; ++i)
       checkboxes[i].onChangeFunc = networkDetails.onPropertyChanged_.bind(this);
 
+    registerCustomCheckbox(doc);
+    registerPropertyListItem(doc);
     registerNetworkIcon(doc, 'details');
   };
 

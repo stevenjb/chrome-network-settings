@@ -92,7 +92,7 @@ var previousView;
 function contentLoaded() {
   var win = getWin();
   var content = win.document.querySelector('#content');
-  registerCustomCheckbox(content.contentWindow.document);
+
   log('contentLoaded: ' + content.srcName);
   if (content.srcName == 'network_summary.html') {
     previousView = content.srcName;

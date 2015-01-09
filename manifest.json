@@ -15,10 +15,12 @@
   "app": {
     "background": {
       "scripts": [
-	"models/component_helper.js",
+	"models/property_util.js",
 	"models/network_state.js",
 	"models/onc_data.js",
+	"models/component_helper.js",
 	"elements/custom-checkbox.js",
+	"elements/property-list-item.js",
 	"elements/network-icon.js",
 	"elements/network-list-item.js",
 	"elements/network-list-select.js",
