@@ -18,9 +18,6 @@ function registerCustomCheckbox(doc) {
   var customCheckboxPrototype = Object.create(HTMLElement.prototype);
 
   function createTemplate(doc) {
-    var template = doc.createElement('template');
-    template.id = 'customCheckboxTemplate';
-
     var div = doc.createElement('div');
     var input = doc.createElement('input');
     input.type = 'checkbox';
@@ -29,9 +26,7 @@ function registerCustomCheckbox(doc) {
     label.id = 'label';
     div.appendChild(label);
 
-    template.content.appendChild(div);
-
-    doc.head.appendChild(template);
+    return div;
   };
 
   customCheckboxPrototype.onChange = function(element) {
@@ -42,18 +37,8 @@ function registerCustomCheckbox(doc) {
   };
 
   customCheckboxPrototype.createdCallback = function() {
-    this.root_ = this.createShadowRoot();
-
-    var doc = this.ownerDocument;
-    var template = doc.querySelector('#customCheckboxTemplate');
-    var clone = doc.importNode(template.content, true);
-    this.root_.appendChild(clone);
-
-    var css = ':host { display: inline-block; }';
-    var style = doc.createElement('style');
-    style.type = 'text/css';
-    style.appendChild(document.createTextNode(css));
-    this.root_.appendChild(style);
+    var hostCss = 'display: inline-block;';
+    this.root_ = componentHelper_.createShadowRoot(this, hostCss);
 
     this.root_.querySelector('span#label').innerText =
         getText(this.attributes.oncproperty.value);
@@ -71,16 +56,8 @@ function registerCustomCheckbox(doc) {
     this.root_.querySelector('input').checked = value;
   };
 
-  createTemplate(doc);
-
-  var customCheckboxElement = doc.registerElement(
-      'custom-checkbox', { prototype : customCheckboxPrototype });
-
-  var css =  doc.createElement('link');
-  css.setAttribute('rel', 'stylesheet');
-  css.setAttribute('type', 'text/css');
-  css.setAttribute('href', '/elements/custom-checkbox.css');
-  doc.getElementsByTagName('head')[0].appendChild(css);
-
-  console.log('custom-checkbox registered');
+  var componentHelper_ =
+      new ComponentHelper(doc, 'custom-checkbox', customCheckboxPrototype);
+  componentHelper_.register(createTemplate(doc));
+  componentHelper_.addCssFile('/elements/custom-checkbox.css');
 }

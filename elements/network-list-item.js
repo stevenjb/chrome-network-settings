@@ -2,8 +2,6 @@ function registerNetworkListItem(doc, defaultListType) {
 
   registerNetworkIcon(doc, defaultListType);
 
-  var componentHelper_ = new ComponentHelper(doc, 'networkListItem');
-
   function getConnectionStateText(stateName, networkName) {
     if (stateName == 'Connected')
       return getText('Connected to %1', [ networkName]);
@@ -56,7 +54,7 @@ function registerNetworkListItem(doc, defaultListType) {
 
     divOuter.appendChild(divDetail);
 
-    componentHelper_.createTemplate(divOuter);
+    return divOuter;
   };
 
   networkListItemPrototype.setListType = function(listType) {
@@ -66,18 +64,8 @@ function registerNetworkListItem(doc, defaultListType) {
   };
 
   networkListItemPrototype.createdCallback = function() {
-    this.root_ = this.createShadowRoot();
-
-    var doc = this.ownerDocument;
-    var template = componentHelper_.getTemplate();
-    var clone = doc.importNode(template.content, true);
-    this.root_.appendChild(clone);
-
-    var css = ':host { display: inline-block; flex: 0 0 auto; }';
-    var style = doc.createElement('style');
-    style.type = 'text/css';
-    style.appendChild(document.createTextNode(css));
-    this.root_.appendChild(style);
+    var hostCss = 'display: inline-block; flex: 0 0 auto;';
+    this.root_ = componentHelper_.createShadowRoot(this, hostCss);
 
     this.root_.querySelector('#div-outer').onclick =
         networkListItemPrototype.clickNetwork.bind(this);
@@ -120,16 +108,8 @@ function registerNetworkListItem(doc, defaultListType) {
     }
   };
 
-  createTemplate(doc);
-
-  var networkListItemElement = doc.registerElement(
-      'network-list-item', { prototype : networkListItemPrototype });
-
-  var css =  doc.createElement('link');
-  css.setAttribute('rel', 'stylesheet');
-  css.setAttribute('type', 'text/css');
-  css.setAttribute('href', '/elements/network-list-item.css');
-  doc.getElementsByTagName('head')[0].appendChild(css);
-
-  console.log('networkListItem registered');
+  var componentHelper_ =
+      new ComponentHelper(doc, 'network-list-item', networkListItemPrototype);
+  componentHelper_.register(createTemplate(doc));
+  componentHelper_.addCssFile('/elements/network-list-item.css');
 }
