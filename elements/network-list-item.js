@@ -2,6 +2,8 @@ function registerNetworkListItem(doc, defaultListType) {
 
   registerNetworkIcon(doc, defaultListType);
 
+  var componentHelper_ = new ComponentHelper(doc, 'networkListItem');
+
   function getConnectionStateText(stateName, networkName) {
     if (stateName == 'Connected')
       return getText('Connected to %1', [ networkName]);
@@ -21,9 +23,6 @@ function registerNetworkListItem(doc, defaultListType) {
   };
 
   function createTemplate(doc) {
-    var template = doc.createElement('template');
-    template.id = 'networkListItemTemplate';
-
     var divOuter = doc.createElement('div');
     divOuter.id = 'div-outer';
 
@@ -57,9 +56,7 @@ function registerNetworkListItem(doc, defaultListType) {
 
     divOuter.appendChild(divDetail);
 
-    template.content.appendChild(divOuter);
-
-    doc.head.appendChild(template);
+    componentHelper_.createTemplate(divOuter);
   };
 
   networkListItemPrototype.setListType = function(listType) {
@@ -72,7 +69,7 @@ function registerNetworkListItem(doc, defaultListType) {
     this.root_ = this.createShadowRoot();
 
     var doc = this.ownerDocument;
-    var template = doc.querySelector('#networkListItemTemplate');
+    var template = componentHelper_.getTemplate();
     var clone = doc.importNode(template.content, true);
     this.root_.appendChild(clone);
 

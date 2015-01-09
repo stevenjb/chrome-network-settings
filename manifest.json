@@ -15,6 +15,7 @@
   "app": {
     "background": {
       "scripts": [
+	"models/component_helper.js",
 	"models/network_state.js",
 	"models/onc_data.js",
 	"elements/custom-checkbox.js",
