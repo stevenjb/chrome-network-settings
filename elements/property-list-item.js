@@ -26,9 +26,14 @@ function registerPropertyListItem(doc) {
     var property = this.attributes.oncproperty.value;
     var value = PropertyUtil.getNestedPropertyAsString(propertyDict, property);
     if (value == undefined) {
-      this.style.display = 'none';
-      return;
+      if (!('default' in this.attributes)) {
+        this.style.display = 'none';
+        return;
+      }
+      value = this.attributes.default.value;
     }
+    if ('postfix' in this.attributes)
+      value += this.attributes.postfix.value;
     this.style.display = 'inherit';
     this.root_.querySelector('#value').innerText = value;
   };

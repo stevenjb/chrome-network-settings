@@ -54,7 +54,9 @@ var networkDetails = networkDetails || {
     stateNode.className = stateName;
     stateNode.innerText = getText(stateName);
 
-    if (network && network['Type'] == 'WiFi') {
+    var type = network['Type'];
+
+    if (network && type == 'WiFi') {
       if (network['ConnectionState'] == 'NotConnected') {
         doc.querySelector('#connect').style.display = 'inherit';
         doc.querySelector('#disconnect').style.display = 'none';
@@ -66,6 +68,20 @@ var networkDetails = networkDetails || {
       doc.querySelector('#connect').style.display = 'none';
       doc.querySelector('#disconnect').style.display = 'none';
     }
+
+    var settingsDivs = doc.querySelectorAll('div#settings div');
+    for (var i = 0; i < settingsDivs.length; ++i)
+      settingsDivs[i].style.display = 'none';
+    var settingsTypeDivs = doc.querySelectorAll('div#settings div.' + type);
+    for (var i = 0; i < settingsTypeDivs.length; ++i)
+      settingsTypeDivs[i].style.display = 'inherit';
+
+    var detailsDivs = doc.querySelectorAll('div#details div');
+    for (var i = 0; i < detailsDivs.length; ++i)
+      detailsDivs[i].style.display = 'none';
+    var detailsTypeDivs = doc.querySelectorAll('div#details div.' + type);
+    for (var i = 0; i < detailsTypeDivs.length; ++i)
+      detailsTypeDivs[i].style.display = 'inherit';
 
     var checkboxes = doc.querySelectorAll('custom-checkbox');
     for (var i = 0; i < checkboxes.length; ++i)
