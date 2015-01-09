@@ -159,7 +159,7 @@ var networkState = networkState || {
   };
 
   networkState.requestStateForNetworkId = function(networkId) {
-    chrome.networkingPrivate.getState(networkId, onGetNetworkState);
+    chrome.networkingPrivate.getProperties(networkId, onGetNetworkState);
   };
 
 })();

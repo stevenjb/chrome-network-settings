@@ -18,6 +18,29 @@ var networkDetails = networkDetails || {
         getText('%1: %2', [property, value ]);
   };
 
+  function setNestedProperty_(dict, key, value) {
+    var data = dict;
+    while (true) {
+      var index = key.indexOf('.');
+      if (index < 0)
+        break;
+      var keyComponent = key.substr(0, index);
+      if (!(keyComponent in data))
+        data[keyComponent] = {};
+      data = data[keyComponent];
+      key = key.substr(index + 1);
+    }
+    data[key] = value;
+  };
+
+  networkDetails.onPropertyChanged_ = function(key, value) {
+    var properties = {};
+    setNestedProperty_(properties, key, value);
+    var guid = this.networkId_;
+    log('networkDetails.onPropertyChanged: ' + guid + ": " + key + '=' + value);
+    chrome.networkingPrivate.setProperties(guid, properties, function() {});
+  };
+
   networkDetails.onDisconnectNetwork_ = function() {
     var guid = this.networkId_;
     log('networkDetails.onDisconnectNetwork: ' + guid);
@@ -92,6 +115,10 @@ var networkDetails = networkDetails || {
       doc.querySelector('#connect').style.display = 'none';
       doc.querySelector('#disconnect').style.display = 'none';
     }
+
+    var checkboxes = doc.querySelectorAll('custom-checkbox');
+    for (var i = 0; i < checkboxes.length; ++i)
+      checkboxes[i].setProperty(network);
   };
 
   // networkDetails functions
@@ -112,6 +139,11 @@ var networkDetails = networkDetails || {
         networkDetails.onDisconnectNetwork_.bind(this);
     doc.querySelector('#connect').onclick =
         networkDetails.onConnectNetwork_.bind(this);
+
+    var checkboxes = doc.querySelectorAll('custom-checkbox');
+    for (var i = 0; i < checkboxes.length; ++i)
+      checkboxes[i].onChangeFunc = networkDetails.onPropertyChanged_.bind(this);
+
     registerNetworkIcon(doc, 'details');
   };
 

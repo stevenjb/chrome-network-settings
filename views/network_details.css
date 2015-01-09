@@ -1,6 +1,7 @@
 div#header {
     display: flex;
     flex-direction: column;
+    margin-bottom: 8px;
 }
 
 div#network {

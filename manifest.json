@@ -15,10 +15,12 @@
   "app": {
     "background": {
       "scripts": [
+	"models/network_state.js",
+	"models/onc_data.js",
+	"elements/custom-checkbox.js",
 	"elements/network-icon.js",
 	"elements/network-list-item.js",
 	"elements/network-list-select.js",
-	"models/network_state.js",
 	"views/network_details.js",
 	"views/network_list.js",
 	"views/network_summary.js",
