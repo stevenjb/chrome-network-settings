@@ -87,7 +87,7 @@ var networkDetails = networkDetails || {
     for (var i = 0; i < checkboxes.length; ++i)
       checkboxes[i].setPropertyFromDict(network);
 
-    var properties = doc.querySelectorAll('property-list-item');
+    var properties = doc.querySelectorAll('onc-property');
     for (var i = 0; i < properties.length; ++i)
       properties[i].setPropertyFromDict(network);
   };
@@ -116,7 +116,7 @@ var networkDetails = networkDetails || {
       checkboxes[i].onChangeFunc = networkDetails.onPropertyChanged_.bind(this);
 
     registerOncCheckbox(doc);
-    registerPropertyListItem(doc);
+    registerOncProperty(doc);
     registerNetworkIcon(doc, 'details');
   };
 

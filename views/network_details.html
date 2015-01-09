@@ -37,64 +37,54 @@
       </div>
       <div class="VPN">
         <onc-checkbox oncproperty="VPN.AutoConnect"></onc-checkbox>
-        <property-list-item oncproperty="VPN.Host"></property-list-item>
-        <property-list-item oncproperty="VPN.Username"></property-list-item>
+        <onc-property oncproperty="VPN.Host"></onc-property>
+        <onc-property oncproperty="VPN.Username"></onc-property>
       </div>
     </div>
 
     <div id="details">
-      <property-list-item oncproperty="Connectable"></property-list-item>
-      <property-list-item oncproperty="RestrictedConnectivity" default="No">
-      </property-list-item>
-      <property-list-item oncproperty="SSID"></property-list-item>
+      <onc-property oncproperty="Connectable"></onc-property>
+      <onc-property oncproperty="RestrictedConnectivity" default="No">
+      </onc-property>
+      <onc-property oncproperty="SSID"></onc-property>
       <div class="WiFi">
-        <property-list-item oncproperty="WiFi.BSSID"></property-list-item>
+        <onc-property oncproperty="WiFi.BSSID"></onc-property>
       </div>
-      <property-list-item oncproperty="MacAddress"></property-list-item>
-      <property-list-item oncproperty="ErrorState"></property-list-item>
+      <onc-property oncproperty="MacAddress"></onc-property>
+      <onc-property oncproperty="ErrorState"></onc-property>
 
       <div class="WiFi">
-        <property-list-item oncproperty="WiFi.Security"></property-list-item>
-        <property-list-item oncproperty="WiFi.EAP"></property-list-item>
-        <property-list-item oncproperty="WiFi.SignalStrength"
-                            default="0" postfix ="%">
-        </property-list-item>
-        <property-list-item oncproperty="WiFi.Frequency" postfix=" MHz">
-        </property-list-item>
+        <onc-property oncproperty="WiFi.Security"></onc-property>
+        <onc-property oncproperty="WiFi.EAP"></onc-property>
+        <onc-property oncproperty="WiFi.SignalStrength"
+                      default="0" postfix ="%">
+        </onc-property>
+        <onc-property oncproperty="WiFi.Frequency" postfix=" MHz">
+        </onc-property>
       </div>
 
       <div class="Cellular">
-        <property-list-item oncproperty="Cellular.NetworkTechnology">
-        </property-list-item>
-        <property-list-item oncproperty="Cellular.ActivationState">
-        </property-list-item>
-        <property-list-item oncproperty="Cellular.RoamingState">
-        </property-list-item>
-        <property-list-item oncproperty="Cellular.OperatorName">
-        </property-list-item>
-        <property-list-item oncproperty="Cellular.OperatorCode">
-        </property-list-item>
-        <property-list-item oncproperty="Cellular.FirmwareRevision">
-        </property-list-item>
-        <property-list-item oncproperty="Cellular.HardwareRevision">
-        </property-list-item>
-        <property-list-item oncproperty="Cellular.Manufacturer">
-        </property-list-item>
-        <property-list-item oncproperty="Cellular.ModelID"></property-list-item>
-        <property-list-item oncproperty="Cellular.PRLVersion">
-        </property-list-item>
-        <property-list-item oncproperty="Cellular.ICCID"></property-list-item>
-        <property-list-item oncproperty="Cellular.IMEI"></property-list-item>
-        <property-list-item oncproperty="Cellular.IMSI"></property-list-item>
-        <property-list-item oncproperty="Cellular.MDN"></property-list-item>
-        <property-list-item oncproperty="Cellular.MEID"></property-list-item>
-        <property-list-item oncproperty="Cellular.MIN"></property-list-item>
+        <onc-property oncproperty="Cellular.NetworkTechnology"></onc-property>
+        <onc-property oncproperty="Cellular.ActivationState"></onc-property>
+        <onc-property oncproperty="Cellular.RoamingState"></onc-property>
+        <onc-property oncproperty="Cellular.OperatorName"></onc-property>
+        <onc-property oncproperty="Cellular.OperatorCode"></onc-property>
+        <onc-property oncproperty="Cellular.FirmwareRevision"></onc-property>
+        <onc-property oncproperty="Cellular.HardwareRevision"></onc-property>
+        <onc-property oncproperty="Cellular.Manufacturer"></onc-property>
+        <onc-property oncproperty="Cellular.ModelID"></onc-property>
+        <onc-property oncproperty="Cellular.PRLVersion"></onc-property>
+        <onc-property oncproperty="Cellular.ICCID"></onc-property>
+        <onc-property oncproperty="Cellular.IMEI"></onc-property>
+        <onc-property oncproperty="Cellular.IMSI"></onc-property>
+        <onc-property oncproperty="Cellular.MDN"></onc-property>
+        <onc-property oncproperty="Cellular.MEID"></onc-property>
+        <onc-property oncproperty="Cellular.MIN"></onc-property>
       </div>
 
       <div class="VPN">
-        <property-list-item oncproperty="VPN.IPSec"></property-list-item>
-        <property-list-item oncproperty="VPN.Type"></property-list-item>
-        </property-list-item>
+        <onc-property oncproperty="VPN.IPSec"></onc-property>
+        <onc-property oncproperty="VPN.Type"></onc-property>
       </div>
 
     </div>

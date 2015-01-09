@@ -1,6 +1,6 @@
-function registerPropertyListItem(doc) {
+function registerOncProperty(doc) {
 
-  var propertyListItemPrototype = Object.create(HTMLElement.prototype);
+  var oncPropertyPrototype = Object.create(HTMLElement.prototype);
 
   function createTemplate(doc) {
     var div = doc.createElement('div');
@@ -14,7 +14,7 @@ function registerPropertyListItem(doc) {
     return div;
   };
 
-  propertyListItemPrototype.createdCallback = function() {
+  oncPropertyPrototype.createdCallback = function() {
     var hostCss = 'display: inline-block;';
     this.root_ = componentHelper_.createShadowRoot(this, hostCss);
 
@@ -22,7 +22,7 @@ function registerPropertyListItem(doc) {
         getText(this.attributes.oncproperty.value);
   };
 
-  propertyListItemPrototype.setPropertyFromDict = function(propertyDict) {
+  oncPropertyPrototype.setPropertyFromDict = function(propertyDict) {
     var property = this.attributes.oncproperty.value;
     var value = PropertyUtil.getNestedPropertyAsString(propertyDict, property);
     if (value == undefined) {
@@ -39,7 +39,7 @@ function registerPropertyListItem(doc) {
   };
 
   var componentHelper_ =
-      new ComponentHelper(doc, 'property-list-item', propertyListItemPrototype);
+      new ComponentHelper(doc, 'onc-property', oncPropertyPrototype);
   componentHelper_.register(createTemplate(doc));
-  componentHelper_.addCssFile('/elements/property-list-item.css');
+  componentHelper_.addCssFile('/elements/onc-property.css');
 }

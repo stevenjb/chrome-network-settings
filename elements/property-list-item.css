@@ -1,9 +1,0 @@
-html /deep/ property-list-item::shadow div {
-    flex: 1 1 auto;
-    margin: 4px;
-}
-
-html /deep/ property-list-item::shadow span {
-    display: inline-block;
-    width: 50%;
-}

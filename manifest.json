@@ -20,7 +20,7 @@
 	"models/onc_data.js",
 	"models/component_helper.js",
 	"elements/onc-checkbox.js",
-	"elements/property-list-item.js",
+	"elements/onc-property.js",
 	"elements/network-icon.js",
 	"elements/network-list-item.js",
 	"elements/network-list-select.js",
