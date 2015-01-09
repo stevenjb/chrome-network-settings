@@ -83,7 +83,7 @@ var networkDetails = networkDetails || {
     for (var i = 0; i < detailsTypeDivs.length; ++i)
       detailsTypeDivs[i].style.display = 'inherit';
 
-    var checkboxes = doc.querySelectorAll('custom-checkbox');
+    var checkboxes = doc.querySelectorAll('onc-checkbox');
     for (var i = 0; i < checkboxes.length; ++i)
       checkboxes[i].setPropertyFromDict(network);
 
@@ -111,11 +111,11 @@ var networkDetails = networkDetails || {
     doc.querySelector('#connect').onclick =
         networkDetails.onConnectNetwork_.bind(this);
 
-    var checkboxes = doc.querySelectorAll('custom-checkbox');
+    var checkboxes = doc.querySelectorAll('onc-checkbox');
     for (var i = 0; i < checkboxes.length; ++i)
       checkboxes[i].onChangeFunc = networkDetails.onPropertyChanged_.bind(this);
 
-    registerCustomCheckbox(doc);
+    registerOncCheckbox(doc);
     registerPropertyListItem(doc);
     registerNetworkIcon(doc, 'details');
   };

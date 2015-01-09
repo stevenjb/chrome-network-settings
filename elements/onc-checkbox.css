@@ -1,4 +1,4 @@
-html /deep/ custom-checkbox::shadow div {
+html /deep/ onc-checkbox::shadow div {
     display: flex;
     flex-direction: row;
     padding: 4px;

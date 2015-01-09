@@ -1,6 +1,6 @@
-function registerCustomCheckbox(doc) {
+function registerOncCheckbox(doc) {
 
-  var customCheckboxPrototype = Object.create(HTMLElement.prototype);
+  var oncCheckboxPrototype = Object.create(HTMLElement.prototype);
 
   function createTemplate(doc) {
     var div = doc.createElement('div');
@@ -14,14 +14,14 @@ function registerCustomCheckbox(doc) {
     return div;
   };
 
-  customCheckboxPrototype.onChange = function(element) {
+  oncCheckboxPrototype.onChange = function(element) {
     if (!this.onChangeFunc)
       return;
     this.onChangeFunc(this.attributes.oncproperty.value,
                       this.root_.querySelector('input').checked);
   };
 
-  customCheckboxPrototype.createdCallback = function() {
+  oncCheckboxPrototype.createdCallback = function() {
     var hostCss = 'display: inline-block;';
     this.root_ = componentHelper_.createShadowRoot(this, hostCss);
 
@@ -29,10 +29,10 @@ function registerCustomCheckbox(doc) {
         getText(this.attributes.oncproperty.value);
 
     this.root_.querySelector('input').onchange =
-        customCheckboxPrototype.onChange.bind(this);
+        oncCheckboxPrototype.onChange.bind(this);
   };
 
-  customCheckboxPrototype.setPropertyFromDict = function(propertyDict) {
+  oncCheckboxPrototype.setPropertyFromDict = function(propertyDict) {
     var property = this.attributes.oncproperty.value;
     var value = PropertyUtil.getNestedProperty(propertyDict, property);
     if (value == undefined)
@@ -41,7 +41,7 @@ function registerCustomCheckbox(doc) {
   };
 
   var componentHelper_ =
-      new ComponentHelper(doc, 'custom-checkbox', customCheckboxPrototype);
+      new ComponentHelper(doc, 'onc-checkbox', oncCheckboxPrototype);
   componentHelper_.register(createTemplate(doc));
-  componentHelper_.addCssFile('/elements/custom-checkbox.css');
+  componentHelper_.addCssFile('/elements/onc-checkbox.css');
 }
