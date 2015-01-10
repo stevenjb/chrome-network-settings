@@ -1,0 +1,39 @@
+html /deep/ onc-ip-config::shadow div#outer {
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+}
+
+html /deep/ onc-ip-config::shadow div#input {
+    display: flex;
+    flex-direction: row;
+}
+
+html /deep/ onc-ip-config::shadow div#config {
+    display: flex;
+    flex-direction: column;
+    margin: 4px 4px 4px 20px;
+}
+
+html /deep/ onc-ip-config::shadow div.config-property {
+    display: flex;
+    flex-direction: row;
+    width: 300px;
+}
+
+html /deep/ onc-ip-config::shadow div.config-property span {
+    display: inline-block;
+    margin-bottom: 8px;
+    width: 50%;
+}
+
+html /deep/ onc-ip-config::shadow div.config-property input {
+    background: transparent;
+    display: inline-block;
+    margin-bottom: 2px;
+}
+
+html /deep/ onc-ip-config::shadow div.config-property input:disabled {
+    border-style: none;
+    color: black;
+}

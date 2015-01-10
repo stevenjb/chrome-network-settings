@@ -13,11 +13,18 @@ var networkDetails = networkDetails || {
   }
 
   networkDetails.onPropertyChanged_ = function(key, value) {
-    var properties = {};
-    PropertyUtil.setNestedProperty(properties, key, value);
+    var oncProperties = {};
+    PropertyUtil.setNestedProperty(oncProperties, key, value);
     var guid = this.networkId_;
     log('networkDetails.onPropertyChanged: ' + guid + ": " + key + '=' + value);
-    chrome.networkingPrivate.setProperties(guid, properties, function() {});
+    chrome.networkingPrivate.setProperties(guid, oncProperties, function() {});
+  };
+
+  networkDetails.onOncDictionaryChanged_ = function(oncProperties) {
+    var guid = this.networkId_;
+    log('networkDetails.onOncDictionaryChanged: ' +
+        JSON.stringify(oncProperties, null, ' '));
+    chrome.networkingPrivate.setProperties(guid, oncProperties, function() {});
   };
 
   networkDetails.onDisconnectNetwork_ = function() {
@@ -87,9 +94,11 @@ var networkDetails = networkDetails || {
     for (var i = 0; i < checkboxes.length; ++i)
       checkboxes[i].setPropertyFromDict(network);
 
-    var properties = doc.querySelectorAll('onc-property');
-    for (var i = 0; i < properties.length; ++i)
-      properties[i].setPropertyFromDict(network);
+    var oncProperties = doc.querySelectorAll('onc-property');
+    for (var i = 0; i < oncProperties.length; ++i)
+      oncProperties[i].setPropertyFromDict(network);
+
+    doc.querySelector('onc-ip-config').setPropertyFromDict(network);
   };
 
   // networkDetails functions
@@ -114,9 +123,12 @@ var networkDetails = networkDetails || {
     var checkboxes = doc.querySelectorAll('onc-checkbox');
     for (var i = 0; i < checkboxes.length; ++i)
       checkboxes[i].onChangeFunc = networkDetails.onPropertyChanged_.bind(this);
+    doc.querySelector('onc-ip-config').onChangeFunc =
+        networkDetails.onOncDictionaryChanged_.bind(this);
 
     registerOncCheckbox(doc);
     registerOncProperty(doc);
+    registerOncIpConfig(doc);
     registerNetworkIcon(doc, 'details');
   };
 
@@ -129,5 +141,4 @@ var networkDetails = networkDetails || {
     networkState.addNetworkObserver(networkId, this);
     networkState.requestStateForNetworkId(networkId);
   };
-
 })();
