@@ -117,6 +117,7 @@ var networkDetails = networkDetails || {
 
     registerOncCheckbox(doc);
     registerOncProperty(doc);
+    registerOncIpConfig(doc);
     registerNetworkIcon(doc, 'details');
   };
 
