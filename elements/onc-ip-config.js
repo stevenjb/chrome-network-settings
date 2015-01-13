@@ -89,6 +89,10 @@ function registerOncIpConfig(doc) {
     var staticIp = {};
     for (var p of kIpConfigProperties)
       staticIp[p] = ipConfig[p];
+
+    // Ensure that some value for 'IPAddress' is set for Static IP config.
+    staticIp['IPAddress'] = staticIp['IPAddress'] || '0.0.0.0';
+
     if (this.staticIp_ && 'NameServers' in this.staticIp_)
       staticIp['NameServers'] = this.staticIp_['NameServers'];
     PropertyUtil.setNestedProperty(oncProperties, 'IPAddressConfigType',
@@ -132,8 +136,6 @@ function registerOncIpConfig(doc) {
 
     var savedIp = propertyDict['SavedIPConfig'];
     this.ipv4_ = ipv4 || savedIp || {};
-    if (!('IPAddress' in this.ipv4_))
-      this.ipv4_['IPAddress'] = '0.0.0.0';
     this.ipv6_ = ipv6 || {};
     this.staticIp_ = staticIp;
 
@@ -154,7 +156,7 @@ function registerOncIpConfig(doc) {
         isStatic ? 'static' : 'automatic';
     var ipConfig = {
       'IPAddress': '',
-      'RoutingPrefix': 1,
+      'RoutingPrefix': -1,
       'Gateway': ''
     };
     if (isStatic)

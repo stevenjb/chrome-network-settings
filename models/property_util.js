@@ -49,8 +49,10 @@ var PropertyUtil = PropertyUtil || {};
    */
   PropertyUtil.prefixLengthToNetmask = function(prefixLength) {
     // Return the empty string for invalid inputs.
-    if (prefixLength < 0 || prefixLength > 32)
+    if (typeof prefixLength != 'number' || prefixLength < 0 ||
+        prefixLength > 32) {
       return '';
+    }
     var netmask = '';
     for (var i = 0; i < 4; ++i) {
       var remainder = 8;
@@ -104,5 +106,4 @@ var PropertyUtil = PropertyUtil || {};
     }
     return prefixLength;
   };
-
 })();

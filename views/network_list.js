@@ -112,15 +112,15 @@ var networkList = networkList || {
 
     registerNetworkListSelect(doc);
 
-    doc.querySelector('#network-entries').onClickFunc =
+    doc.querySelector('network-list-select').onClickFunc =
         networkList.onNetworkClicked_.bind(this);
-    doc.querySelector('#back').onclick = onBack;
-    doc.querySelector('#disconnect').onclick =
+    doc.querySelector('button#back').onclick = onBack;
+    doc.querySelector('button#disconnect').onclick =
         networkList.onDisconnectNetwork_.bind(this);
-    doc.querySelector('#info-icon').onclick =
+    doc.querySelector('img#info-icon').onclick =
         networkList.onDefaultNetworkClicked_.bind(this);
-    doc.querySelector('#network-type').innerText =  getText(type);
-    doc.querySelector('#header network-icon').setListType('summary');
+    doc.querySelector('span#network-type').innerText =  getText(type);
+    doc.querySelector('div#header network-icon').setListType('summary');
     
     networkList.onNetworkListChanged(networkState.networks);
     networkList.onNetworkStateChanged();

@@ -114,10 +114,10 @@ var networkDetails = networkDetails || {
     networkDetails.doc_ = contentWin.document;
 
     var doc = networkDetails.doc_;
-    doc.querySelector('#back').onclick = onBack;
-    doc.querySelector('#disconnect').onclick =
+    doc.querySelector('button#back').onclick = onBack;
+    doc.querySelector('button#disconnect').onclick =
         networkDetails.onDisconnectNetwork_.bind(this);
-    doc.querySelector('#connect').onclick =
+    doc.querySelector('button#connect').onclick =
         networkDetails.onConnectNetwork_.bind(this);
 
     var checkboxes = doc.querySelectorAll('onc-checkbox');
