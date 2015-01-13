@@ -89,7 +89,7 @@ function registerOncIpConfig(doc) {
     var staticIp = {};
     for (var p of kIpConfigProperties)
       staticIp[p] = ipConfig[p];
-    if ('NameServers' in this.staticIp_)
+    if (this.staticIp_ && 'NameServers' in this.staticIp_)
       staticIp['NameServers'] = this.staticIp_['NameServers'];
     PropertyUtil.setNestedProperty(oncProperties, 'IPAddressConfigType',
                                    'Static');
