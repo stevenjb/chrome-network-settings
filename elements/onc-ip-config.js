@@ -54,6 +54,14 @@ function registerOncIpConfig(doc) {
       var oncProperties = {};
       PropertyUtil.setNestedProperty(oncProperties, 'IPAddressConfigType',
                                      'DHCP');
+      if ('NameServers' in this.staticIp_) {
+        PropertyUtil.setNestedProperty(oncProperties, 'NameServersConfigType',
+                                       nameServersType);
+        var staticIpConfig = {};
+        staticIpConfig['NameServers'] = this.staticIp_;
+        PropertyUtil.setNestedProperty(oncProperties, 'StaticIPConfig',
+                                       staticIpConfig);
+      }
       this.onChangeFunc(oncProperties);
     } else {
       this.setStaticIpConfig_();
@@ -65,10 +73,9 @@ function registerOncIpConfig(doc) {
       return;
     if (this.root_.querySelector('input#checkbox').checked)
       return;
-    this.staticIp_ = {};
+    this.staticIp_ = this.staticIp_ || {};
     this.staticIp_['IPAddress'] =
         this.root_.querySelector('input#IPAddressValue').value;
-
     var mask = this.root_.querySelector('input#RoutingPrefixValue').value;
     this.staticIp_['RoutingPrefix'] = PropertyUtil.netmaskToPrefixLength(mask);
     this.staticIp_['Gateway'] =
@@ -81,6 +88,9 @@ function registerOncIpConfig(doc) {
     this.staticIp_ = this.staticIp_ || this.ipv4_;
     PropertyUtil.setNestedProperty(oncProperties, 'IPAddressConfigType',
                                    'Static');
+    var nameServersType = ('NameServers' in this.staticIp_) ? 'Static' : 'DHCP';
+    PropertyUtil.setNestedProperty(oncProperties, 'NameServersConfigType',
+                                   nameServersType);
     PropertyUtil.setNestedProperty(oncProperties, 'StaticIPConfig',
                                    this.staticIp_);
 

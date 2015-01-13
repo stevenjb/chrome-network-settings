@@ -17,7 +17,6 @@
       "scripts": [
 	"models/property_util.js",
 	"models/network_state.js",
-	"models/onc_data.js",
 	"models/component_helper.js",
 	"elements/onc-checkbox.js",
 	"elements/onc-property.js",
