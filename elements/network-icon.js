@@ -75,7 +75,7 @@ function registerNetworkIcon(doc, defaultListType) {
           src += '_' + iconAmt;
       icon.src = src + '.png';
     }
-    if (security) {
+    if (security && security != 'None') {
       badge.style.display = undefined;
       badge.src = '../assets/secure.png';
     } else {

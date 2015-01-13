@@ -85,14 +85,18 @@ function registerOncIpConfig(doc) {
 
   oncIpConfigPrototype.setStaticIpConfig_ = function(element) {
     var oncProperties = {};
-    this.staticIp_ = this.staticIp_ || this.ipv4_;
+    var ipConfig = this.staticIp_ || this.ipv4_;
+    var staticIp = {};
+    for (var p of kIpConfigProperties)
+      staticIp[p] = ipConfig[p];
+    if ('NameServers' in this.staticIp_)
+      staticIp['NameServers'] = this.staticIp_['NameServers'];
     PropertyUtil.setNestedProperty(oncProperties, 'IPAddressConfigType',
                                    'Static');
-    var nameServersType = ('NameServers' in this.staticIp_) ? 'Static' : 'DHCP';
+    var nameServersType = ('NameServers' in staticIp) ? 'Static' : 'DHCP';
     PropertyUtil.setNestedProperty(oncProperties, 'NameServersConfigType',
                                    nameServersType);
-    PropertyUtil.setNestedProperty(oncProperties, 'StaticIPConfig',
-                                   this.staticIp_);
+    PropertyUtil.setNestedProperty(oncProperties, 'StaticIPConfig', staticIp);
 
     this.onChangeFunc(oncProperties);
   };
