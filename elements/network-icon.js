@@ -38,19 +38,19 @@ function registerNetworkIcon(doc, defaultListType) {
       iconType = 'wifi';
       var wifi = network['WiFi'];
       if (wifi) {
-        strength = wifi['SignalStrength'];
+        strength = wifi['SignalStrength'] || 0;
         security = wifi['Security'];
       }
     } else if (type == 'Cellular') {
       iconType = 'mobile';
       var cellular = network['Cellular'];
       if (cellular)
-        strength = cellular['SignalStrength'];
+        strength = cellular['SignalStrength'] || 0;
     } else if (type == 'WiMAX') {
       iconType = 'mobile';
       var wimax = network['WiMAX'];
       if (wimax)
-        strength = wimax['SignalStrength'];
+        strength = wimax['SignalStrength'] || 0;
     } else if (type == 'VPN') {
       iconType = 'vpn';
     }

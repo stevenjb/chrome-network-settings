@@ -50,6 +50,15 @@ div#title #network-state.Connected,#network-state.Connecting {
     font-weight: bold;
 }
 
+div#connection {
+    display: flex;
+    flex-direction: row;
+}
+
+div#connection button {
+    margin-left: 16px;
+}
+
 div#details {
     border-style: solid;
     border-width: 1px;

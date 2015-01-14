@@ -139,10 +139,10 @@ function registerOncIpConfig(doc) {
     this.ipv6_ = ipv6 || {};
     this.staticIp_ = staticIp;
 
-    this.updateView();
+    this.updateView(propertyDict);
   };
 
-  oncIpConfigPrototype.updateView = function() {
+  oncIpConfigPrototype.updateView = function(propertyDict) {
     function mergeIpConfig(base, newConfig) {
       for (var p of kIpConfigProperties) {
         if (newConfig[p] != undefined)
@@ -152,8 +152,13 @@ function registerOncIpConfig(doc) {
 
     var isStatic = this.staticIp_ != undefined;
     this.root_.querySelector('input#checkbox').checked = !isStatic;
-    this.root_.querySelector('div#config').class =
-        isStatic ? 'static' : 'automatic';
+
+    if (!isStatic && propertyDict['ConnectionState'] != 'Connected') {
+      this.root_.querySelector('div#config').style.display = 'none';
+      return;
+    }
+    this.root_.querySelector('div#config').style.display = 'inherit';
+
     var ipConfig = {
       'IPAddress': '',
       'RoutingPrefix': -1,

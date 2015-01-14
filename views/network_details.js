@@ -39,6 +39,11 @@ var networkDetails = networkDetails || {
     chrome.networkingPrivate.startConnect(guid);
   };
 
+  networkDetails.onConfigureNetwork_ = function() {
+    var guid = this.networkId_;
+    log('networkDetails.onConfigureNetwork: ' + guid);
+  };
+
   // networkState Observer
   networkDetails.onNetworkChanged = function(network) {
     // log('networkDetails:onNetworkChanged: ' +
@@ -63,17 +68,21 @@ var networkDetails = networkDetails || {
 
     var type = network['Type'];
 
+    doc.querySelector('#connect').style.display = 'none';
+    doc.querySelector('#configure').style.display = 'none';
+    doc.querySelector('#disconnect').style.display = 'none';
+
     if (network && type == 'WiFi') {
       if (network['ConnectionState'] == 'NotConnected') {
-        doc.querySelector('#connect').style.display = 'inherit';
-        doc.querySelector('#disconnect').style.display = 'none';
+        if (network['Connectable'] == true) {
+          doc.querySelector('#connect').style.display = 'inherit';
+          doc.querySelector('#configure').style.display = 'inherit';
+        } else {
+          doc.querySelector('#configure').style.display = 'inherit';
+        }
       } else {
-        doc.querySelector('#connect').style.display = 'none';
         doc.querySelector('#disconnect').style.display = 'inherit';
       }
-    } else {
-      doc.querySelector('#connect').style.display = 'none';
-      doc.querySelector('#disconnect').style.display = 'none';
     }
 
     var settingsDivs = doc.querySelectorAll('div#settings div');
@@ -119,6 +128,8 @@ var networkDetails = networkDetails || {
         networkDetails.onDisconnectNetwork_.bind(this);
     doc.querySelector('button#connect').onclick =
         networkDetails.onConnectNetwork_.bind(this);
+    doc.querySelector('button#configure').onclick =
+        networkDetails.onConfigureNetwork_.bind(this);
 
     var checkboxes = doc.querySelectorAll('onc-checkbox');
     for (var i = 0; i < checkboxes.length; ++i)
