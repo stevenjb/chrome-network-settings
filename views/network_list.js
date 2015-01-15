@@ -35,10 +35,12 @@ var networkList = networkList || {
   networkList.onNetworkClicked_ = function(network, which) {
     var guid = network['GUID'];
     log('networkList.onNetworkClicked: ' + guid);
-    if (which != 'info-icon' && network['ConnectionState'] == 'NotConnected')
+    if (which != 'info-icon' && network['ConnectionState'] == 'NotConnected'
+        && network['Connectable']) {
       chrome.networkingPrivate.startConnect(guid);
-    else
+    } else {
       this.parentWin_.showNetwork(guid);
+    }
   };
 
   networkList.onDefaultNetworkClicked_ = function() {

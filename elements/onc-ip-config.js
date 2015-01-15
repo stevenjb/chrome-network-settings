@@ -69,7 +69,7 @@ function registerOncIpConfig(doc) {
     }
   };
 
-  oncIpConfigPrototype.onPropertyChanged_ = function(event) {
+  oncIpConfigPrototype.onIpPropertyChange_ = function(event) {
     if (!this.onChangeFunc)
       return;
     if (this.root_.querySelector('input#checkbox').checked)
@@ -82,6 +82,13 @@ function registerOncIpConfig(doc) {
     this.staticIp_['Gateway'] =
         this.root_.querySelector('input#GatewayValue').value;
     this.setStaticIpConfig_();
+  };
+
+  oncIpConfigPrototype.onObjectChanged_ = function(changes) {
+    for (var change of changes) {
+      if (change.name == 'disabled')
+        this.updateDisabled_();
+    }
   };
 
   oncIpConfigPrototype.setStaticIpConfig_ = function(event) {
@@ -114,7 +121,9 @@ function registerOncIpConfig(doc) {
         oncIpConfigPrototype.onCheckboxChanged_.bind(this);
     var inputs =  this.root_.querySelectorAll('input.config-property');
     for (var i = 0; i < inputs.length; ++i)
-      inputs[i].onblur = oncIpConfigPrototype.onPropertyChanged_.bind(this);
+      inputs[i].onblur = oncIpConfigPrototype.onIpPropertyChange_.bind(this);
+
+    Object.observe(this, oncIpConfigPrototype.onObjectChanged_.bind(this));
   };
 
   oncIpConfigPrototype.setPropertyFromDict = function(propertyDict) {
@@ -140,10 +149,12 @@ function registerOncIpConfig(doc) {
     this.ipv6_ = ipv6 || {};
     this.staticIp_ = staticIp;
 
-    this.updateView(propertyDict);
+    this.connectionState_ = propertyDict['ConnectionState'];
+
+    this.updateView_();
   };
 
-  oncIpConfigPrototype.updateView = function(propertyDict) {
+  oncIpConfigPrototype.updateView_ = function() {
     function mergeIpConfig(base, newConfig) {
       for (var p of kIpConfigProperties) {
         if (newConfig[p] != undefined)
@@ -154,7 +165,7 @@ function registerOncIpConfig(doc) {
     var isStatic = this.staticIp_ != undefined;
     this.root_.querySelector('input#checkbox').checked = !isStatic;
 
-    if (!isStatic && propertyDict['ConnectionState'] != 'Connected') {
+    if (!isStatic && this.connectionState_ != 'Connected') {
       this.root_.querySelector('div#config').style.display = 'none';
       return;
     }
@@ -190,6 +201,12 @@ function registerOncIpConfig(doc) {
       ipv6Label.style.display = 'none';
       ipv6Value.style.display = 'none';
     }
+
+    this.updateDisabled_();
+  };
+
+  oncIpConfigPrototype.updateDisabled_ = function() {
+    this.root_.querySelector('input#checkbox').disabled = this.disabled;
   };
 
   var componentHelper_ =

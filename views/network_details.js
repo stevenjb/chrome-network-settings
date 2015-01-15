@@ -67,6 +67,7 @@ var networkDetails = networkDetails || {
     stateNode.innerText = getText(stateName);
 
     var type = network['Type'];
+    var connectable = (network['Connectable'] == true);
 
     doc.querySelector('#connect').style.display = 'none';
     doc.querySelector('#configure').style.display = 'none';
@@ -74,7 +75,7 @@ var networkDetails = networkDetails || {
 
     if (network && type == 'WiFi') {
       if (network['ConnectionState'] == 'NotConnected') {
-        if (network['Connectable'] == true) {
+        if (connectable) {
           doc.querySelector('#connect').style.display = 'inherit';
           doc.querySelector('#configure').style.display = 'inherit';
         } else {
@@ -91,7 +92,10 @@ var networkDetails = networkDetails || {
     var settingsTypeDivs = doc.querySelectorAll('div#settings div.' + type);
     for (var i = 0; i < settingsTypeDivs.length; ++i)
       settingsTypeDivs[i].style.display = 'inherit';
-
+    var settingsElements = doc.querySelectorAll('div#settings :not(div)');
+    for (var i = 0; i < settingsElements.length; ++i)
+      settingsElements[i].disabled = !connectable;
+    
     var detailsDivs = doc.querySelectorAll('div#details div');
     for (var i = 0; i < detailsDivs.length; ++i)
       detailsDivs[i].style.display = 'none';

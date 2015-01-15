@@ -21,6 +21,13 @@ function registerOncCheckbox(doc) {
                       this.root_.querySelector('input').checked);
   };
 
+  oncCheckboxPrototype.onObjectChanged_ = function(changes) {
+    for (var change of changes) {
+      if (change.name == 'disabled')
+        this.updateDisabled_();
+    }
+  };
+
   oncCheckboxPrototype.createdCallback = function() {
     var hostCss = 'display: inline-block;';
     this.root_ = componentHelper_.createShadowRoot(this, hostCss);
@@ -30,6 +37,7 @@ function registerOncCheckbox(doc) {
 
     this.root_.querySelector('input').onchange =
         oncCheckboxPrototype.onChange.bind(this);
+    Object.observe(this, oncCheckboxPrototype.onObjectChanged_.bind(this));
   };
 
   oncCheckboxPrototype.setPropertyFromDict = function(propertyDict) {
@@ -38,6 +46,11 @@ function registerOncCheckbox(doc) {
     if (value == undefined)
       return;
     this.root_.querySelector('input').checked = value;
+    this.updateDisabled_();
+  };
+
+  oncCheckboxPrototype.updateDisabled_ = function() {
+    this.root_.querySelector('input').disabled = this.disabled;
   };
 
   var componentHelper_ =

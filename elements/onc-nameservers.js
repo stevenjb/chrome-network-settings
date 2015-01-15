@@ -75,6 +75,13 @@ function registerOncNameservers(doc) {
     this.sendNameservers_('custom');
   };
 
+  oncNameserversPrototype.onObjectChanged_ = function(changes) {
+    for (var change of changes) {
+      if (change.name == 'disabled')
+        this.updateDisabled_();
+    }
+  };
+
   oncNameserversPrototype.sendNameservers_ = function(type) {
     var onc = {};
     var staticIpConfig = this.staticIpConfig_ || {};
@@ -114,6 +121,8 @@ function registerOncNameservers(doc) {
       nameserverInputs[i].onblur =
           oncNameserversPrototype.onNameserverChanged_.bind(this);
     }
+
+    Object.observe(this, oncNameserversPrototype.onObjectChanged.bind(this));
 
     this.customNameservers_ = [];
   };
@@ -166,6 +175,12 @@ function registerOncNameservers(doc) {
       selectType.selectedIndex = 1;
     else
       selectType.selectedIndex = 0;
+
+    this.updateDisabled_();
+  };
+
+  oncNameserversPrototype.updateDisabled_ = function() {
+    this.root_.querySelector('select#type').disabled = this.disabled;
   };
 
   var componentHelper_ =
