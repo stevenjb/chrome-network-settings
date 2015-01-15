@@ -12,11 +12,12 @@ var networkDetails = networkDetails || {
     networkDetails.parentWin_.closeDetails(); 
   }
 
-  networkDetails.onPropertyChanged_ = function(key, value) {
+  networkDetails.onOncPropertyChanged_ = function(key, value) {
     var oncProperties = {};
     PropertyUtil.setNestedProperty(oncProperties, key, value);
     var guid = this.networkId_;
-    log('networkDetails.onPropertyChanged: ' + guid + ": " + key + '=' + value);
+    log('networkDetails.onOncPropertyChanged: ' + guid + ": " + key + '=' +
+        value);
     chrome.networkingPrivate.setProperties(guid, oncProperties, function() {});
   };
 
@@ -42,6 +43,7 @@ var networkDetails = networkDetails || {
   networkDetails.onConfigureNetwork_ = function() {
     var guid = this.networkId_;
     log('networkDetails.onConfigureNetwork: ' + guid);
+    networkDetails.parentWin_.showNetworkConfigure(guid); 
   };
 
   // networkState Observer
@@ -138,7 +140,8 @@ var networkDetails = networkDetails || {
 
     var checkboxes = doc.querySelectorAll('onc-checkbox');
     for (var i = 0; i < checkboxes.length; ++i)
-      checkboxes[i].onChangeFunc = networkDetails.onPropertyChanged_.bind(this);
+      checkboxes[i].onChangeFunc =
+          networkDetails.onOncPropertyChanged_.bind(this);
     doc.querySelector('onc-ip-config').onChangeFunc =
         networkDetails.onOncDictionaryChanged_.bind(this);
     doc.querySelector('onc-nameservers').onChangeFunc =

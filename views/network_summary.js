@@ -13,7 +13,7 @@ var networkSummary = networkSummary || {
     if (which != 'info-icon' && type == 'wifi')
       networkSummary.parentWin_.showNetworkList('WiFi', guid);
     else
-      networkSummary.parentWin_.showNetwork(guid);
+      networkSummary.parentWin_.showNetworkDetails(guid);
   };
 
   // networkState Observer

@@ -42,6 +42,18 @@ var PropertyUtil = PropertyUtil || {};
     data[key] = value;
   };
 
+  PropertyUtil.mergeNestedProperties = function(dict, properties) {
+    for (var key in properties) {
+      var value = properties[key];
+      if (typeof value == 'object') {
+        var subDict = dict[key] || {};
+        PropertyUtil.mergeNestedProperties(subDict, value);
+        value = subDict;
+      }
+      PropertyUtil.setNestedProperty(dict, key, value);
+    }
+  };
+
   /**
    * Returns the netmask as a string for a given prefix length.
    * @param {number} prefixLength The ONC routing prefix length.

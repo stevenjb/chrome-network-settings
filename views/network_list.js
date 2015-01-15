@@ -39,7 +39,7 @@ var networkList = networkList || {
         && network['Connectable']) {
       chrome.networkingPrivate.startConnect(guid);
     } else {
-      this.parentWin_.showNetwork(guid);
+      this.parentWin_.showNetworkDetails(guid);
     }
   };
 
@@ -48,7 +48,7 @@ var networkList = networkList || {
     if (!guid)
       return;
     log('networkList.onDefaultNetworkClicked: ' + guid);
-    this.parentWin_.showNetwork(guid);
+    this.parentWin_.showNetworkDetails(guid);
   };
 
   networkList.onDisconnectNetwork_ = function() {

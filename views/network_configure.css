@@ -1,0 +1,50 @@
+body {
+    overflow: auto;
+}
+
+div#header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
+
+div#network {
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    margin-top: 16px;
+}
+
+div#network div#icon {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: center;
+}
+
+div#network div#icon network-icon {
+    height: 48px;
+    padding-bottom: 8px;
+    width: 48px;
+}
+
+div#network div#title {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 8px;
+}
+
+div#title #network-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+div#settings {
+    border-style: none;
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px 2px 12px 2px;
+    padding: 4px;
+}

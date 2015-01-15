@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="network_configure.css">
+</head>
+
+<body>
+  <div id="div-outer">
+
+    <div id="header">
+      <div id="back">
+        <button id="back">Back</button>
+      </div>
+      <div id="network">
+        <div id="icon">
+          <network-icon id="network-icon"></network-icon>
+        </div>
+        <div id="title">
+          <span id="network-name"></span>
+        </div>
+      </div>
+    </div>
+
+    <div id="settings">
+      <div class="WiFi">
+        <onc-checkbox oncproperty="WiFi.AutoConnect"></onc-checkbox>
+        <onc-property oncproperty="SSID"></onc-property>
+        <onc-select oncproperty="WiFi.Security">
+          <onc-select-item oncproperty="None"></onc-select-item>
+          <onc-select-item oncproperty="WEP_PSK"></onc-select-item>
+          <onc-select-item oncproperty="WPA_PSK"></onc-select-item>
+          <onc-select-item oncproperty="WPA_EAP"></onc-select-item>
+        </onc-select>
+        <onc-property oncproperty="Passphrase"></onc-property>
+        <onc-select oncproperty="WiFi.EAP">
+          <onc-select-item oncproperty="LEAP"></onc-select-item>
+          <onc-select-item oncproperty="PEAP"></onc-select-item>
+          <onc-select-item oncproperty="EAP-TLS"></onc-select-item>
+          <onc-select-item oncproperty="EAP-TTLS"></onc-select-item>
+        </onc-select>
+        <onc-select oncproperty="WiFi.EAP.Inner">
+          <onc-select-item oncproperty="Automatic"></onc-select-item>
+          <onc-select-item oncproperty="MD5"></onc-select-item>
+          <onc-select-item oncproperty="MSCHAPv2"></onc-select-item>
+        </onc-select>
+      </div>
+
+      <div class="WiMAX">
+        <onc-checkbox oncproperty="WiMAX.AutoConnect"></onc-checkbox>
+      </div>
+
+      <div id="EAP" class="WiFi WiMAX">
+        <onc-property oncproperty="EAP.Identity"></onc-property>
+        <onc-property oncproperty="EAP.Password"></onc-property>
+        <onc-property oncproperty="EAP.AnonymousIdentity"></onc-property>
+        <onc-checkbox oncproperty="EAP.SaveCredentials"></onc-checkbox>
+      </div>
+
+      <div class="VPN">
+        <onc-checkbox oncproperty="VPN.AutoConnect"></onc-checkbox>
+        <onc-property oncproperty="VPN.IPSec"></onc-property>
+        <onc-property oncproperty="VPN.Type"></onc-property>
+        <onc-property oncproperty="VPN.Host"></onc-property>
+        <onc-property oncproperty="VPN.Username"></onc-property>
+      </div>
+
+      <div id="ip-config" class="Ethernet WiFi">
+        <onc-ip-config></onc-ip-config>
+      </div>
+
+      <div id="nameservers" class="Ethernet WiFi">
+        <onc-nameservers></onc-nameservers>
+      </div>
+    </div>
+
+    <div id="connect">
+      <button id="connect">Connect</button>
+    </div>
+
+  </div>
+</body>
+
+</html>

@@ -25,6 +25,7 @@
 	"elements/network-icon.js",
 	"elements/network-list-item.js",
 	"elements/network-list-select.js",
+	"views/network_configure.js",
 	"views/network_details.js",
 	"views/network_list.js",
 	"views/network_summary.js",

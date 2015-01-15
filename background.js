@@ -102,6 +102,8 @@ function contentLoaded() {
     networkListLoaded();
   } else if (content.srcName == 'network_details.html') {
     networkDetailsLoaded();
+  } else if (content.srcName == 'network_configure.html') {
+    networkConfigureLoaded();
   }
 }
 
@@ -156,12 +158,12 @@ function networkListLoaded() {
   networkList.init(this, content.contentWindow, networkListType);
 }
 
-// NetworkDetails
+// etworkDetails
 
 var networkDetailsNetworkId;
 
-function showNetwork(networkId, from) {
-  log('showNetwork: ' + networkId);
+function showNetworkDetails(networkId, from) {
+  log('showNetworkDetails: ' + networkId);
   networkDetails.init(this);
 
   networkDetailsNetworkId = networkId;
@@ -172,4 +174,22 @@ function networkDetailsLoaded() {
   var content = getContent();
   networkDetails.setContentWindow(content.contentWindow);
   networkDetails.setNetworkId(networkDetailsNetworkId);
+}
+
+// NetworkConfigure
+
+var networkConfigureNetworkId;
+
+function showNetworkConfigure(networkId, from) {
+  log('showNetworkConfigure: ' + networkId);
+  networkConfigure.init(this);
+
+  networkConfigureNetworkId = networkId;
+  setContent('network_configure.html');
+}
+
+function networkConfigureLoaded() {
+  var content = getContent();
+  networkConfigure.setContentWindow(content.contentWindow);
+  networkConfigure.setNetworkId(networkConfigureNetworkId);
 }
