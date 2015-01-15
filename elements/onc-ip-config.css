@@ -36,4 +36,5 @@ html /deep/ onc-ip-config::shadow div.config-property input {
 html /deep/ onc-ip-config::shadow div.config-property input:disabled {
     border-style: none;
     color: black;
+    margin-bottom: 4px;
 }

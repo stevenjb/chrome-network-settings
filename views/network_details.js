@@ -108,6 +108,7 @@ var networkDetails = networkDetails || {
       oncProperties[i].setPropertyFromDict(network);
 
     doc.querySelector('onc-ip-config').setPropertyFromDict(network);
+    doc.querySelector('onc-nameservers').setPropertyFromDict(network);
   };
 
   // networkDetails functions
@@ -136,10 +137,13 @@ var networkDetails = networkDetails || {
       checkboxes[i].onChangeFunc = networkDetails.onPropertyChanged_.bind(this);
     doc.querySelector('onc-ip-config').onChangeFunc =
         networkDetails.onOncDictionaryChanged_.bind(this);
+    doc.querySelector('onc-nameservers').onChangeFunc =
+        networkDetails.onOncDictionaryChanged_.bind(this);
 
     registerOncCheckbox(doc);
     registerOncProperty(doc);
     registerOncIpConfig(doc);
+    registerOncNameservers(doc);
     registerNetworkIcon(doc, 'details');
   };
 

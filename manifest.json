@@ -21,6 +21,7 @@
 	"elements/onc-checkbox.js",
 	"elements/onc-property.js",
 	"elements/onc-ip-config.js",
+	"elements/onc-nameservers.js",
 	"elements/network-icon.js",
 	"elements/network-list-item.js",
 	"elements/network-list-select.js",

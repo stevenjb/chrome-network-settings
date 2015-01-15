@@ -1,6 +1,7 @@
 function registerOncIpConfig(doc) {
 
-  var kIpConfigProperties = [ 'IPAddress', 'RoutingPrefix', 'Gateway' ];
+  /** @const */ var kIpConfigProperties =
+      [ 'IPAddress', 'RoutingPrefix', 'Gateway' ];
 
   var oncIpConfigPrototype = Object.create(HTMLElement.prototype);
 
@@ -46,7 +47,7 @@ function registerOncIpConfig(doc) {
     return div;
   };
 
-  oncIpConfigPrototype.onCheckboxChanged_ = function(element) {
+  oncIpConfigPrototype.onCheckboxChanged_ = function(event) {
     if (!this.onChangeFunc)
       return;
     var checked = this.root_.querySelector('input#checkbox').checked;
@@ -68,7 +69,7 @@ function registerOncIpConfig(doc) {
     }
   };
 
-  oncIpConfigPrototype.onPropertyChanged_ = function(element) {
+  oncIpConfigPrototype.onPropertyChanged_ = function(event) {
     if (!this.onChangeFunc)
       return;
     if (this.root_.querySelector('input#checkbox').checked)
@@ -83,7 +84,7 @@ function registerOncIpConfig(doc) {
     this.setStaticIpConfig_();
   };
 
-  oncIpConfigPrototype.setStaticIpConfig_ = function(element) {
+  oncIpConfigPrototype.setStaticIpConfig_ = function(event) {
     var oncProperties = {};
     var ipConfig = this.staticIp_ || this.ipv4_;
     var staticIp = {};
@@ -119,7 +120,7 @@ function registerOncIpConfig(doc) {
   oncIpConfigPrototype.setPropertyFromDict = function(propertyDict) {
     var ipv4, ipv6;
     var ipConfigs = propertyDict['IPConfigs'];
-    if (Array.isArray(ipConfigs)) {
+    if (ipConfigs && Array.isArray(ipConfigs)) {
       for (var ipConfig of ipConfigs) {
         if (ipConfig['Type'] == 'IPv6') {
           if (ipv6 == undefined)

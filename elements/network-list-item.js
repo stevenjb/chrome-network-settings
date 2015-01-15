@@ -14,10 +14,10 @@ function registerNetworkListItem(doc, defaultListType) {
 
   var networkListItemPrototype = Object.create(HTMLElement.prototype);
 
-  networkListItemPrototype.clickNetwork = function(element) {
+  networkListItemPrototype.clickNetwork = function(event) {
     if (!this.onClickFunc)
       return;
-    this.onClickFunc(this.network_, element.srcElement.id);
+    this.onClickFunc(this.network_, event.srcElement.id);
   };
 
   function createTemplate(doc) {

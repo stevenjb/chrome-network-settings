@@ -1,0 +1,23 @@
+html /deep/ onc-nameservers::shadow div#outer {
+    padding: 4px;
+}
+
+html /deep/ onc-nameservers::shadow div#type {
+    margin: 4px;
+}
+
+html /deep/ onc-nameservers::shadow div#nameservers {
+    display: inline-block;
+    margin: 4px;
+}
+
+html /deep/ onc-nameservers::shadow div#nameservers input {
+    background: transparent;
+    width: 200px;
+    margin: 0px 4px 2px 0px;
+}
+
+html /deep/ onc-nameservers::shadow div#nameservers input:disabled {
+    border-style: none;
+    margin: 0px 6px 6px 2px;
+}

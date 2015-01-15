@@ -14,7 +14,7 @@ function registerOncCheckbox(doc) {
     return div;
   };
 
-  oncCheckboxPrototype.onChange = function(element) {
+  oncCheckboxPrototype.onChange = function(event) {
     if (!this.onChangeFunc)
       return;
     this.onChangeFunc(this.attributes.oncproperty.value,

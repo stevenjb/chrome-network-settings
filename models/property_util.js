@@ -1,7 +1,7 @@
 var PropertyUtil = PropertyUtil || {};
 
 (function() {
-  var kDefaultPrefix = 25;  // 255.255.255.128
+  /** @const */ var kDefaultPrefix = 25;  // 255.255.255.128
 
   PropertyUtil.getNestedProperty = function(dict, key) {
     var data = dict;
