@@ -113,6 +113,7 @@ var networkList = networkList || {
     networkList.doc_ = doc;
 
     registerNetworkListSelect(doc);
+    registerNetworkTdls(doc);
 
     doc.querySelector('network-list-select').onClickFunc =
         networkList.onNetworkClicked_.bind(this);
@@ -123,6 +124,8 @@ var networkList = networkList || {
         networkList.onDefaultNetworkClicked_.bind(this);
     doc.querySelector('span#network-type').innerText =  getText(type);
     doc.querySelector('div#header network-icon').setListType('summary');
+
+    doc.querySelector('network-tdls').style.display = type == 'WiFi';
     
     networkList.onNetworkListChanged(networkState.networks);
     networkList.onNetworkStateChanged();

@@ -122,7 +122,7 @@ function registerOncNameservers(doc) {
           oncNameserversPrototype.onNameserverChanged_.bind(this);
     }
 
-    Object.observe(this, oncNameserversPrototype.onObjectChanged.bind(this));
+    Object.observe(this, oncNameserversPrototype.onObjectChanged_.bind(this));
 
     this.customNameservers_ = [];
   };

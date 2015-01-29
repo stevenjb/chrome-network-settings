@@ -69,7 +69,7 @@ function registerOncIpConfig(doc) {
     }
   };
 
-  oncIpConfigPrototype.onIpPropertyChange_ = function(event) {
+  oncIpConfigPrototype.onIpPropertyChanged_ = function(event) {
     if (!this.onChangeFunc)
       return;
     if (this.root_.querySelector('input#checkbox').checked)
@@ -121,7 +121,7 @@ function registerOncIpConfig(doc) {
         oncIpConfigPrototype.onCheckboxChanged_.bind(this);
     var inputs =  this.root_.querySelectorAll('input.config-property');
     for (var i = 0; i < inputs.length; ++i)
-      inputs[i].onblur = oncIpConfigPrototype.onIpPropertyChange_.bind(this);
+      inputs[i].onblur = oncIpConfigPrototype.onIpPropertyChanged_.bind(this);
 
     Object.observe(this, oncIpConfigPrototype.onObjectChanged_.bind(this));
   };

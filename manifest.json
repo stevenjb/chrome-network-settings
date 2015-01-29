@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "SimpleApp",
+  "name": "Network Settings",
   "description": "",
   "version": "0.0.3",
   "minimum_chrome_version": "23",
@@ -25,6 +25,7 @@
 	"elements/network-icon.js",
 	"elements/network-list-item.js",
 	"elements/network-list-select.js",
+	"elements/network-tdls.js",
 	"views/network_configure.js",
 	"views/network_details.js",
 	"views/network_list.js",

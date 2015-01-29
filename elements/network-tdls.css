@@ -1,0 +1,21 @@
+html /deep/ network-tdls::shadow div#outer {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+html /deep/ network-tdls::shadow input {
+    background: transparent;
+    display: inline-block;
+    margin-bottom: 2px;
+}
+
+html /deep/ network-tdls::shadow span {
+    display: inline-block;
+    margin: 4px;
+}
+
+html /deep/ network-tdls::shadow button {
+    display: inline-block;
+    margin: 4px;
+}
